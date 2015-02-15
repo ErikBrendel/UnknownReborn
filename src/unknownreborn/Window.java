@@ -18,12 +18,15 @@ public class Window {
      */
     public void init() {
         window = new JFrame();
+        window.setUndecorated(true);
+        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
 
     /**
      *  fenster anzeigen
      */
     public void show() {
-        
+        window.setVisible(true);
     }
 }
