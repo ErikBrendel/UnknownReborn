@@ -5,7 +5,6 @@
  */
 package unknownreborn;
 
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 /**
@@ -21,7 +20,15 @@ public interface GameActivity {
      * @return
      */
     public abstract BufferedImage render(BufferedImage in);
+    
+    /**
+     * wenn die activity geladen wird --> ...angezeigt wird
+     */
     public abstract void onEnter();
+    
+    /**
+     * letzte methode, danach wird nicht mehr render() aufgerufen
+     */
     public abstract void onExit();
     
     /**
