@@ -6,6 +6,7 @@
 package unknownreborn;
 
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 
 /**
  *
@@ -21,6 +22,10 @@ public interface GameActivity {
      * @param hight height of the screen
      */
     public abstract void render(Graphics2D g, int width, int hight);
+    
+    public abstract void onKeyPressed(KeyEvent e);
+    
+    public abstract void onKeyReleased(KeyEvent e); 
     
     /**
      * vll. muessen wir hier noch was übergeben :D
@@ -45,11 +50,9 @@ public interface GameActivity {
         public void render(Graphics2D g, int width, int hight) {
         }
         
-        
         @Override
         public void update() {
         }
-
 
         @Override
         public void onEnter() {
@@ -57,6 +60,14 @@ public interface GameActivity {
 
         @Override
         public void onExit() {
+        }
+
+        @Override
+        public void onKeyPressed(KeyEvent e) {
+        }
+
+        @Override
+        public void onKeyReleased(KeyEvent e) {
         }
     };
 }
