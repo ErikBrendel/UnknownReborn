@@ -5,6 +5,7 @@
  */
 package unknownreborn;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 /**
@@ -13,7 +14,31 @@ import java.awt.image.BufferedImage;
  * 
  */
 public interface GameActivity {
-    public abstract BufferedImage render();
+
+    /**
+     *
+     * @param in das BufferedImage über das drüber gemalt werden soll (damit die größe schon feststeht)
+     * @return
+     */
+    public abstract BufferedImage render(BufferedImage in);
     public abstract void onEnter();
     public abstract void onExit();
+    
+    /**
+     * Eine default-activity, komplet schwarz
+     */
+    public static final GameActivity ACTIVITY_EMPTY = new GameActivity() {
+        @Override
+        public BufferedImage render(BufferedImage in) {
+            return in;
+        }
+
+        @Override
+        public void onEnter() {
+        }
+
+        @Override
+        public void onExit() {
+        }
+    };
 }
