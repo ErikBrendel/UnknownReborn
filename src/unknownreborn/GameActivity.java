@@ -6,7 +6,6 @@
 package unknownreborn;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 
 /**
  *
@@ -22,6 +21,11 @@ public interface GameActivity {
      * @param hight height of the screen
      */
     public abstract void render(Graphics2D g, int width, int hight);
+    
+    /**
+     * vll. muessen wir hier noch was übergeben :D
+     */
+    public abstract void update();
     
     /**
      * wenn die activity geladen wird --> ...angezeigt wird
@@ -40,6 +44,12 @@ public interface GameActivity {
         @Override
         public void render(Graphics2D g, int width, int hight) {
         }
+        
+        
+        @Override
+        public void update() {
+        }
+
 
         @Override
         public void onEnter() {
@@ -48,6 +58,5 @@ public interface GameActivity {
         @Override
         public void onExit() {
         }
-
     };
 }
