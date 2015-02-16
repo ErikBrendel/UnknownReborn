@@ -5,7 +5,7 @@
  */
 package unknownreborn;
 
-import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
 import java.util.HashMap;
 
 /**
@@ -31,10 +31,12 @@ public class ActivityManager {
 
     /**
      * hier wird die aktuelle activity gerendert
-     * @param img das Bild
+     * @param g das Graphics-Objekt zum zeichnen
+     * @param w width
+     * @param h height
      */
-    public void render(BufferedImage img) {
-        active.render(img);
+    public void render(Graphics2D g, int w, int h) {
+        active.render(g, w, h);
     }
     
 }

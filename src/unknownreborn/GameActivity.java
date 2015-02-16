@@ -5,6 +5,7 @@
  */
 package unknownreborn;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -16,9 +17,11 @@ public interface GameActivity {
 
     /**
      *
-     * @param img das BufferedImage über das drüber gemalt werden soll (damit die größe schon feststeht)
+     * @param g the graphics-object to be painted with
+     * @param width  height of the screen
+     * @param hight height of the screen
      */
-    public abstract void render(BufferedImage img);
+    public abstract void render(Graphics2D g, int width, int hight);
     
     /**
      * wenn die activity geladen wird --> ...angezeigt wird
@@ -35,7 +38,7 @@ public interface GameActivity {
      */
     public static final GameActivity ACTIVITY_EMPTY = new GameActivity() {
         @Override
-        public void render(BufferedImage img) {
+        public void render(Graphics2D g, int width, int hight) {
         }
 
         @Override
@@ -45,5 +48,6 @@ public interface GameActivity {
         @Override
         public void onExit() {
         }
+
     };
 }

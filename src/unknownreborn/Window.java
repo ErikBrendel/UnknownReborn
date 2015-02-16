@@ -63,9 +63,7 @@ public class Window {
         @Override
         public void paint(Graphics gOrig) {
             Graphics2D g = (Graphics2D) gOrig;
-            BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-            manager.render(img);
-            g.drawImage(img, 0, 0, null);
+            manager.render(g, getWidth(), getHeight());
         }
     }
 }
