@@ -40,6 +40,10 @@ public class Window {
         window.setVisible(true);
     }
     
+    
+    
+    
+    
     /**
      * das JPanel im JFrame, in dem alles passiert
      */
@@ -57,8 +61,8 @@ public class Window {
          * nutzt die render-methode des activityManagers
          */
         @Override
-        public void paint(Graphics g2) {
-            Graphics2D g = (Graphics2D) g2;
+        public void paint(Graphics gOrig) {
+            Graphics2D g = (Graphics2D) gOrig;
             BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
             manager.render(img);
             g.drawImage(img, 0, 0, null);
