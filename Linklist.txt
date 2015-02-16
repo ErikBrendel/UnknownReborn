@@ -1,0 +1,4 @@
+------------------------------------------- Link-Liste ------------------------------------------- 
+Artikel zur Verwendung und dem Einsatz von Gamestates, englisch:
+ - http://gamedevelopment.tutsplus.com/articles/how-to-build-a-jrpg-a-primer-for-game-developers--gamedev-6676
+
