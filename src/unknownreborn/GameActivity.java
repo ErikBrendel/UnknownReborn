@@ -9,7 +9,8 @@ import java.awt.image.BufferedImage;
 
 /**
  *
- * @author Erik Brendel
+ * The Interface for an Activity (or State) in the game
+ * 
  */
 public interface GameActivity {
     public abstract BufferedImage render();
