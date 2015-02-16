@@ -16,10 +16,10 @@ public interface GameActivity {
 
     /**
      *
-     * @param in das BufferedImage über das drüber gemalt werden soll (damit die größe schon feststeht)
+     * @param img das BufferedImage über das drüber gemalt werden soll (damit die größe schon feststeht)
      * @return
      */
-    public abstract BufferedImage render(BufferedImage in);
+    public abstract BufferedImage render(BufferedImage img);
     
     /**
      * wenn die activity geladen wird --> ...angezeigt wird
@@ -36,8 +36,8 @@ public interface GameActivity {
      */
     public static final GameActivity ACTIVITY_EMPTY = new GameActivity() {
         @Override
-        public BufferedImage render(BufferedImage in) {
-            return in;
+        public BufferedImage render(BufferedImage img) {
+            return img;
         }
 
         @Override
