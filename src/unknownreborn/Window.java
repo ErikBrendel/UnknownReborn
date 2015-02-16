@@ -7,7 +7,8 @@ package unknownreborn;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -31,6 +32,7 @@ public class Window {
         window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         manager = new ActivityManager();
         panel = new GamePanel(manager);
+        panel.addKeyListener(panel);
     }
 
     /**
@@ -47,11 +49,11 @@ public class Window {
     /**
      * das JPanel im JFrame, in dem alles passiert
      */
-    private class GamePanel extends JPanel {
+    private class GamePanel extends JPanel implements KeyListener{
         ActivityManager manager;
         /**
          * den activityManager übergeben
-         * @param manager der manager
+         * @param manager der manager 
          */
         public GamePanel(ActivityManager manager) {
             this.manager = manager;
@@ -64,6 +66,21 @@ public class Window {
         public void paint(Graphics gOrig) {
             Graphics2D g = (Graphics2D) gOrig;
             manager.render(g, getWidth(), getHeight());
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            manager.keyPressed(e);
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            manager.keyReleased(e);
+        }
+        
+        @Override
+        public void keyTyped(KeyEvent e) {
+            //do nothing
         }
     }
 }
