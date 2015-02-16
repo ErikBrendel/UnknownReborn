@@ -4,5 +4,6 @@ Artikel zur Verwendung und dem Einsatz von Gamestates, englisch:
 
 Map-Dateien per XML laden:
  - http://gamedevelopment.tutsplus.com/tutorials/parsing-tiled-tmx-format-maps-in-your-own-game-engine--gamedev-3104
+ - eine mögliche Libary: http://www.jdom.org/news/index.html
 
 
