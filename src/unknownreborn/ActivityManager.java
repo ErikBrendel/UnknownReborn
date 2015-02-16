@@ -6,6 +6,7 @@
 package unknownreborn;
 
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 
 /**
@@ -37,6 +38,13 @@ public class ActivityManager {
      */
     public void render(Graphics2D g, int w, int h) {
         active.render(g, w, h);
+    }
+    
+    public void keyPressed(KeyEvent e) {
+        active.onKeyPressed(e);
+    }
+    public void keyReleased(KeyEvent e) {
+        active.onKeyReleased(e); 
     }
     
 }
