@@ -13,7 +13,11 @@ import java.awt.event.KeyEvent;
  * The Interface for an Activity (or State) in the game
  * 
  */
-public interface GameActivity {
+public abstract class GameActivity {
+    final ActivityManager myManager;
+    public GameActivity(ActivityManager manager) {
+        myManager = manager;
+    }
 
     /**
      *
@@ -45,7 +49,7 @@ public interface GameActivity {
     /**
      * Eine default-activity, komplet schwarz
      */
-    public static final GameActivity ACTIVITY_EMPTY = new GameActivity() {
+    public static final GameActivity ACTIVITY_EMPTY = new GameActivity(null) {
         @Override
         public void render(Graphics2D g, int width, int hight) {
         }
