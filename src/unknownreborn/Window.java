@@ -5,10 +5,14 @@
  */
 package unknownreborn;
 
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -29,13 +33,18 @@ public class Window {
         window = new JFrame();
         window.setUndecorated(true);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         manager = new ActivityManager();
         manager.addActivity(new MainMenueActivity(manager), "mainMenue");
         manager.showActivity("mainMenue");
         panel = new GamePanel(manager);
         panel.addKeyListener(panel);
         window.setContentPane(panel);
+        
+        //remove cursor
+        BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+        window.getContentPane().setCursor(blankCursor);
     }
 
     /**
