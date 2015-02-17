@@ -37,8 +37,10 @@ public class ActivityManager {
     public void showActivity(String name) {
         GameActivity newActivity = activities.get(name);
         if (newActivity == null) { //wenn die activity nicht vorhanden
+            System.out.println("No activity called " + name);
             newActivity = GameActivity.ACTIVITY_EMPTY;
         }
+        newActivity.onEnter();
         active = newActivity;
     }
 

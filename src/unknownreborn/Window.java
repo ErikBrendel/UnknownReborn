@@ -29,11 +29,13 @@ public class Window {
         window = new JFrame();
         window.setUndecorated(true);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        //window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         manager = new ActivityManager();
         manager.addActivity(new MainMenueActivity(manager), "mainMenue");
+        manager.showActivity("mainMenue");
         panel = new GamePanel(manager);
         panel.addKeyListener(panel);
+        window.setContentPane(panel);
     }
 
     /**
@@ -41,6 +43,18 @@ public class Window {
      */
     public void show() {
         window.setVisible(true);
+        new Thread() {
+            public void run() {
+                while(true) {
+                    panel.repaint();
+                    try {
+                        Thread.sleep(10);
+                    } catch (Exception ex) {
+                        
+                    }
+                }
+            }
+        }.start();
     }
     
     

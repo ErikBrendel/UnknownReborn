@@ -15,15 +15,20 @@ import util.ImageLoader;
  * @author Erik Brendel
  */
 public class MainMenueActivity extends GameActivity {
-
-    private BufferedImage bgImage = null;
-
     public MainMenueActivity(ActivityManager manager) {
         super(manager);
     }
+
+    private BufferedImage bgImage = null;
+
     
     @Override
-    public void render(Graphics2D g, int width, int hight) {
+    public void render(Graphics2D g, int width, int height) {
+        if (!(bgImage.getWidth() == width && bgImage.getHeight() == height)) { //sollte nur das erste mal sein
+            //bild auf Bildschirm skalieren
+            bgImage = ImageLoader.getScaledImage(bgImage, width, height, ImageLoader.MODE_FINE);
+        }
+        g.drawImage(bgImage, 0, 0, null);
     }
 
     @Override
