@@ -31,20 +31,23 @@ public class MainMenueActivity extends GameActivity {
             bgImage = ImageLoader.getScaledImage(bgImage, width, height, ImageLoader.MODE_FINE);
         }
         g.drawImage(bgImage, 0, 0, null);
-        
-        Point buttonSize = new Point(400, 50);
-        Point b1Start = new Point((width - buttonSize.x)/2, height - 30 - buttonSize.y);
-        drawButton(g, b1Start, buttonSize, "Beenden", selectedButton == 2);
-        
-        Point b2Start = new Point(b1Start.x, b1Start.y - 30 - buttonSize.y);
-        drawButton(g, b2Start, buttonSize, "Optionen", selectedButton == 1);
-        
-        Point b3Start = new Point(b2Start.x, b2Start.y - 30 - buttonSize.y);
-        drawButton(g, b3Start, buttonSize, "Neues Spiel", selectedButton == 0);
+
+        { // alle Knöpfe malen
+            Point buttonSize = new Point(400, 50);
+            Point b1Start = new Point((width - buttonSize.x) / 2, height - 30 - buttonSize.y);
+            drawButton(g, b1Start, buttonSize, "Beenden", selectedButton == 2);
+
+            Point b2Start = new Point(b1Start.x, b1Start.y - 30 - buttonSize.y);
+            drawButton(g, b2Start, buttonSize, "Optionen", selectedButton == 1);
+
+            Point b3Start = new Point(b2Start.x, b2Start.y - 30 - buttonSize.y);
+            drawButton(g, b3Start, buttonSize, "Neues Spiel", selectedButton == 0);
+        }
     }
-    
+
     /**
      * draws one button with that grafics object
+     *
      * @param g the graphics to paint with
      * @param start the upper left start corner of the button
      * @param size the size of the button
@@ -87,7 +90,6 @@ public class MainMenueActivity extends GameActivity {
                 launchButtonEvent(maxSelectedButton); //last button--> exit --> exits game
 
         }
-        System.out.println(selectedButton);
     }
 
     private void launchButtonEvent(int buttonID) {
