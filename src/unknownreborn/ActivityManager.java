@@ -26,8 +26,20 @@ public class ActivityManager {
      * @param newActivity die Activity
      * @param name der Name
      */
-    public void addState(GameActivity newActivity, String name) {
+    public void addActivity(GameActivity newActivity, String name) {
         activities.put(name, newActivity);
+    }
+    
+    /**
+     * zu einer anderen Activity wechseln
+     * @param name the name of the new activity
+     */
+    public void showActivity(String name) {
+        GameActivity newActivity = activities.get(name);
+        if (newActivity == null) { //wenn die activity nicht vorhanden
+            newActivity = GameActivity.ACTIVITY_EMPTY;
+        }
+        active = newActivity;
     }
 
     /**
