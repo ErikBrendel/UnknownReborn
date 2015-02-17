@@ -38,7 +38,7 @@ public class Window {
         manager.addActivity(new MainMenueActivity(manager), "mainMenue");
         manager.showActivity("mainMenue");
         panel = new GamePanel(manager);
-        panel.addKeyListener(panel);
+        window.addKeyListener(panel);
         window.setContentPane(panel);
         
         //remove cursor
