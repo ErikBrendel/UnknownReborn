@@ -6,6 +6,10 @@ Map-Dateien per XML laden:
  - http://gamedevelopment.tutsplus.com/tutorials/parsing-tiled-tmx-format-maps-in-your-own-game-engine--gamedev-3104
  - eine mögliche Libary: http://www.jdom.org/news/index.html
  
+Entity Component System (ECS):
+ - kurze Einführung: http://www.gamedev.net/page/resources/_/technical/game-programming/understanding-component-entity-systems-r3013
+ - ausführliche Erklärung: http://www.richardlord.net/blog/what-is-an-entity-framework
+ 
 Zum Strukturieren des Grundaufbaus:
  - https://www.gliffy.com/go/html5/7251501
 
