@@ -32,7 +32,7 @@ public class MainMenueActivity extends GameActivity {
         }
         g.drawImage(bgImage, 0, 0, null);
 
-        { // alle Knöpfe malen
+        {// alle Knöpfe malen
             Point buttonSize = new Point(400, 50);
             Point b1Start = new Point((width - buttonSize.x) / 2, height - 30 - buttonSize.y);
             drawButton(g, b1Start, buttonSize, "Beenden", selectedButton == 2);
@@ -42,7 +42,7 @@ public class MainMenueActivity extends GameActivity {
 
             Point b3Start = new Point(b2Start.x, b2Start.y - 30 - buttonSize.y);
             drawButton(g, b3Start, buttonSize, "Neues Spiel", selectedButton == 0);
-        }
+        }//ende Knöpfe
     }
 
     /**
@@ -109,7 +109,7 @@ public class MainMenueActivity extends GameActivity {
 
     @Override
     public void onEnter() {
-        bgImage = ImageLoader.get().image("/gui/mainBG.jpg", "Loading mainMenue BG");
+        bgImage = ImageLoader.get().image("/gui/mainBG.jpg");
     }
 
     @Override
