@@ -34,13 +34,13 @@ public class MainMenueActivity extends GameActivity {
 
         {// alle Knöpfe malen
             Point buttonSize = new Point(400, 50);
-            Point b1Start = new Point((width - buttonSize.x) / 2, height - 30 - buttonSize.y);
+            Point b1Start = new Point((width - buttonSize.x) / 2, height - 60 - buttonSize.y);
             drawButton(g, b1Start, buttonSize, "Beenden", selectedButton == 2);
 
-            Point b2Start = new Point(b1Start.x, b1Start.y - 30 - buttonSize.y);
+            Point b2Start = new Point(b1Start.x, b1Start.y - buttonSize.y);
             drawButton(g, b2Start, buttonSize, "Optionen", selectedButton == 1);
 
-            Point b3Start = new Point(b2Start.x, b2Start.y - 30 - buttonSize.y);
+            Point b3Start = new Point(b2Start.x, b2Start.y - buttonSize.y);
             drawButton(g, b3Start, buttonSize, "Neues Spiel", selectedButton == 0);
         }//ende Knöpfe
     }
