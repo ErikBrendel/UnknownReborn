@@ -6,8 +6,10 @@
 package unknownreborn;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import util.ImageLoader;
@@ -23,26 +25,19 @@ public class MainMenueActivity extends GameActivity {
     }
 
     private BufferedImage bgImage = null;
+    private Point buttonBeenden = null;
+    private Point buttonOptionen = null;
+    private Point buttonNeuesSpiel = null;
+    private Point buttonSize = null;
 
     @Override
     public void render(Graphics2D g, int width, int height) {
-        if (!(bgImage.getWidth() == width && bgImage.getHeight() == height)) { //sollte nur das erste mal sein
-            //bild auf Bildschirm skalieren
-            bgImage = ImageLoader.getScaledImage(bgImage, width, height, ImageLoader.MODE_FINE);
-        }
         g.drawImage(bgImage, 0, 0, null);
 
-        {// alle Knöpfe malen
-            Point buttonSize = new Point(400, 50);
-            Point b1Start = new Point((width - buttonSize.x) / 2, height - 60 - buttonSize.y);
-            drawButton(g, b1Start, buttonSize, "Beenden", selectedButton == 2);
-
-            Point b2Start = new Point(b1Start.x, b1Start.y - buttonSize.y);
-            drawButton(g, b2Start, buttonSize, "Optionen", selectedButton == 1);
-
-            Point b3Start = new Point(b2Start.x, b2Start.y - buttonSize.y);
-            drawButton(g, b3Start, buttonSize, "Neues Spiel", selectedButton == 0);
-        }//ende Knöpfe
+        // alle Knöpfe malen
+        drawButton(g, buttonBeenden, buttonSize, "Beenden", selectedButton == 2);
+        drawButton(g, buttonOptionen, buttonSize, "Optionen", selectedButton == 1);
+        drawButton(g, buttonNeuesSpiel, buttonSize, "Neues Spiel", selectedButton == 0);
     }
 
     /**
@@ -109,12 +104,21 @@ public class MainMenueActivity extends GameActivity {
 
     @Override
     public void onEnter() {
-        bgImage = ImageLoader.get().image("/gui/mainBG.jpg");
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        bgImage = ImageLoader.getScaledImage(ImageLoader.get().image("/gui/mainBG.jpg"), screen.width, screen.height, ImageLoader.MODE_FINE);
+        
+        buttonSize = new Point(400, 50);
+        buttonBeenden = new Point((screen.width - buttonSize.x) / 2, screen.height - 60 - buttonSize.y);
+        buttonOptionen = new Point(buttonBeenden.x, buttonBeenden.y - buttonSize.y);
+        buttonNeuesSpiel = new Point(buttonOptionen.x, buttonOptionen.y - buttonSize.y);
     }
 
     @Override
     public void onExit() {
         bgImage = null;
+        buttonBeenden = null;
+        buttonOptionen = null;
+        buttonNeuesSpiel = null;
     }
 
 }
