@@ -12,6 +12,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import util.ImageLoader;
 
 /**
@@ -25,6 +26,7 @@ public class MainMenueActivity extends GameActivity {
     }
 
     private BufferedImage bgImage = null;
+    private HashMap<String, BufferedImage> buttonImages = null;
     private Point buttonBeenden = null;
     private Point buttonOptionen = null;
     private Point buttonNeuesSpiel = null;
@@ -35,9 +37,25 @@ public class MainMenueActivity extends GameActivity {
         g.drawImage(bgImage, 0, 0, null);
 
         // alle Knöpfe malen
-        drawButton(g, buttonBeenden, buttonSize, "Beenden", selectedButton == 2);
-        drawButton(g, buttonOptionen, buttonSize, "Optionen", selectedButton == 1);
-        drawButton(g, buttonNeuesSpiel, buttonSize, "Neues Spiel", selectedButton == 0);
+        if (selectedButton == 0) {
+            g.drawImage(buttonImages.get("neuesspielH"), buttonNeuesSpiel.x, buttonNeuesSpiel.y, null);
+        } else {
+            g.drawImage(buttonImages.get("neuesspiel"), buttonNeuesSpiel.x, buttonNeuesSpiel.y, null);
+        }
+        if (selectedButton == 1) {
+            g.drawImage(buttonImages.get("optionenH"), buttonOptionen.x, buttonOptionen.y, null);
+        } else {
+            g.drawImage(buttonImages.get("optionen"), buttonOptionen.x, buttonOptionen.y, null);
+        }
+        if (selectedButton == 2) {
+            g.drawImage(buttonImages.get("beendenH"), buttonBeenden.x, buttonBeenden.y, null);
+        } else {
+            g.drawImage(buttonImages.get("beenden"), buttonBeenden.x, buttonBeenden.y, null);
+        }
+        
+        //drawButton(g, buttonBeenden, buttonSize, "Beenden", selectedButton == 2);
+        //drawButton(g, buttonOptionen, buttonSize, "Optionen", selectedButton == 1);
+        //drawButton(g, buttonNeuesSpiel, buttonSize, "Neues Spiel", selectedButton == 0);
     }
 
     /**
@@ -105,12 +123,20 @@ public class MainMenueActivity extends GameActivity {
     @Override
     public void onEnter() {
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        bgImage = ImageLoader.getScaledImage(ImageLoader.get().image("/gui/mainBG.jpg"), screen.width, screen.height, ImageLoader.MODE_FINE);
+        bgImage = ImageLoader.getScaledImage(ImageLoader.get().image("/gui/menue/mainBG.jpg"), screen.width, screen.height, ImageLoader.MODE_FINE);
         
         buttonSize = new Point(400, 50);
         buttonBeenden = new Point((screen.width - buttonSize.x) / 2, screen.height - 60 - buttonSize.y);
         buttonOptionen = new Point(buttonBeenden.x, buttonBeenden.y - buttonSize.y);
         buttonNeuesSpiel = new Point(buttonOptionen.x, buttonOptionen.y - buttonSize.y);
+        
+        buttonImages = new HashMap<>();
+        buttonImages.put("beenden", ImageLoader.get().image("/gui/menue/btn_beenden.png"));
+        buttonImages.put("beendenH", ImageLoader.get().image("/gui/menue/btn_beendenHover.png"));
+        buttonImages.put("neuesspiel", ImageLoader.get().image("/gui/menue/btn_neuesspiel.png"));
+        buttonImages.put("neuesspielH", ImageLoader.get().image("/gui/menue/btn_neuesspielHover.png"));
+        buttonImages.put("optionen", ImageLoader.get().image("/gui/menue/btn_optionen.png"));
+        buttonImages.put("optionenH", ImageLoader.get().image("/gui/menue/btn_optionenHover.png"));
     }
 
     @Override
@@ -119,6 +145,6 @@ public class MainMenueActivity extends GameActivity {
         buttonBeenden = null;
         buttonOptionen = null;
         buttonNeuesSpiel = null;
+        buttonImages = null;
     }
-
 }
