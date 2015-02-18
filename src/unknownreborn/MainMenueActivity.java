@@ -125,8 +125,8 @@ public class MainMenueActivity extends GameActivity {
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         bgImage = ImageLoader.getScaledImage(ImageLoader.get().image("/gui/menue/mainBG.jpg"), screen.width, screen.height, ImageLoader.MODE_FINE);
         
-        buttonSize = new Point(400, 50);
-        buttonBeenden = new Point((screen.width - buttonSize.x) / 2, screen.height - 60 - buttonSize.y);
+        buttonSize = new Point(600, 75);
+        buttonBeenden = new Point((screen.width - buttonSize.x) / 2, screen.height - 110 - buttonSize.y);
         buttonOptionen = new Point(buttonBeenden.x, buttonBeenden.y - buttonSize.y);
         buttonNeuesSpiel = new Point(buttonOptionen.x, buttonOptionen.y - buttonSize.y);
         
