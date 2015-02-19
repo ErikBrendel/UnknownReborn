@@ -62,7 +62,10 @@ public class ActivityManager {
             activeStack.remove(remove);
         }
     }
-
+    
+    public void update(long delta) {
+        
+    }
     /**
      * hier wird die aktuelle activity gerendert
      *

@@ -5,6 +5,7 @@
  */
 package unknownreborn;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -20,55 +21,41 @@ import javax.swing.JPanel;
  *
  * @author Erik Brendel
  */
-public class Window {
+public class Window extends JFrame {
     
-    JFrame window;
-    GamePanel panel;
-    ActivityManager manager;
+    private GamePanel panel;
+    private long fps = 0;
     
+    public Window(ActivityManager manager, String name) {
+        super(name);
+        panel = new GamePanel(manager);
+    }
     /**
      * fenster laden
      */
-    public void init() {
-        window = new JFrame();
-        window.setUndecorated(true);
-        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        manager = new ActivityManager();
-        manager.loadActivity(new MainMenueActivity(manager), "mainMenue");
-        manager.showActivity("mainMenue", null);
-        panel = new GamePanel(manager);
-        window.addKeyListener(panel);
-        window.setContentPane(panel);
+    public void initialisation() {
+        this.setUndecorated(true);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setContentPane(panel);
+        this.addKeyListener(panel);
         
         //remove cursor
         BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
         Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
-        window.getContentPane().setCursor(blankCursor);
+        this.getContentPane().setCursor(blankCursor);
     }
 
     /**
      *  fenster anzeigen
      */
-    public void show() {
-        window.setVisible(true);
-        new Thread() {
-            public void run() {
-                while(true) {
-                    panel.repaint();
-                    try {
-                        Thread.sleep(10);
-                    } catch (Exception ex) {
-                        
-                    }
-                }
-            }
-        }.start();
+    public void makeVisible() {
+        this.setVisible(true);
     }
     
-    
-    
-    
+    public void updateFPS(long fps) {
+        this.fps = fps;
+    }
     
     /**
      * das JPanel im JFrame, in dem alles passiert
@@ -87,9 +74,11 @@ public class Window {
          * nutzt die render-methode des activityManagers
          */
         @Override
-        public void paint(Graphics gOrig) {
-            Graphics2D g = (Graphics2D) gOrig;
-            manager.render(g, getWidth(), getHeight());
+        public void paint(Graphics g) {
+            manager.render((Graphics2D) g, getWidth(), getHeight());
+            
+            g.setColor(Color.RED);
+            g.drawString("FPS: " + Long.toString(fps), 20, 10);
         }
 
         @Override
