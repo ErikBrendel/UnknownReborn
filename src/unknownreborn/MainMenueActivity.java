@@ -79,7 +79,7 @@ public class MainMenueActivity extends GameActivity {
     final int maxSelectedButton = 2;
 
     @Override
-    public void onKeyPressed(KeyEvent e) {
+    public boolean onKeyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
             case KeyEvent.VK_W:
@@ -103,6 +103,7 @@ public class MainMenueActivity extends GameActivity {
                 launchButtonEvent(maxSelectedButton); //last button--> exit --> exits game
 
         }
+        return true;
     }
 
     private void launchButtonEvent(int buttonID) {
@@ -113,7 +114,8 @@ public class MainMenueActivity extends GameActivity {
     }
 
     @Override
-    public void onKeyReleased(KeyEvent e) {
+    public boolean onKeyReleased(KeyEvent e) {
+        return true;
     }
 
     @Override
@@ -121,7 +123,7 @@ public class MainMenueActivity extends GameActivity {
     }
 
     @Override
-    public void onEnter() {
+    public void onEnter(Object p) {
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         bgImage = ImageLoader.getScaledImage(ImageLoader.get().image("/gui/menue/mainBG.jpg"), screen.width, screen.height, ImageLoader.MODE_FINE);
         

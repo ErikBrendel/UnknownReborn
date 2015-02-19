@@ -27,9 +27,19 @@ public abstract class GameActivity {
      */
     public abstract void render(Graphics2D g, int width, int hight);
     
-    public abstract void onKeyPressed(KeyEvent e);
+    /**
+     *
+     * @param e des KeyEvent
+     * @return ob das event von dieser activity abgefangen wurde --> sonst wird es an die nächst-tiefere im stack weitergegeben
+     */
+    public abstract boolean onKeyPressed(KeyEvent e);
     
-    public abstract void onKeyReleased(KeyEvent e); 
+    /**
+     * 
+     * @param e das KeyEvent
+     * @return ob das event von dieser activity abgefangen wurde --> sonst wird es an die nächst-tiefere im stack weitergegeben
+     */
+    public abstract boolean onKeyReleased(KeyEvent e); 
     
     /**
      * vll. muessen wir hier noch was übergeben :D
@@ -38,8 +48,9 @@ public abstract class GameActivity {
     
     /**
      * wenn die activity geladen wird --> ...angezeigt wird
+     * @param parameter ein parameter objekt (wie text bei Chatbox)
      */
-    public abstract void onEnter();
+    public abstract void onEnter(Object parameter);
     
     /**
      * letzte methode, danach wird nicht mehr render() aufgerufen
@@ -59,7 +70,7 @@ public abstract class GameActivity {
         }
 
         @Override
-        public void onEnter() {
+        public void onEnter(Object p) {
         }
 
         @Override
@@ -67,11 +78,13 @@ public abstract class GameActivity {
         }
 
         @Override
-        public void onKeyPressed(KeyEvent e) {
+        public boolean onKeyPressed(KeyEvent e) {
+            return false;
         }
 
         @Override
-        public void onKeyReleased(KeyEvent e) {
+        public boolean onKeyReleased(KeyEvent e) {
+            return false;
         }
     };
 }

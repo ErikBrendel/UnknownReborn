@@ -35,8 +35,8 @@ public class Window {
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         manager = new ActivityManager();
-        manager.addActivity(new MainMenueActivity(manager), "mainMenue");
-        manager.showActivity("mainMenue");
+        manager.loadActivity(new MainMenueActivity(manager), "mainMenue");
+        manager.showActivity("mainMenue", null);
         panel = new GamePanel(manager);
         window.addKeyListener(panel);
         window.setContentPane(panel);
