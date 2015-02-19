@@ -14,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import util.ImageLoader;
+import util.MP3Player;
 
 /**
  *
@@ -31,6 +32,7 @@ public class MainMenueActivity extends GameActivity {
     private Point buttonOptionen = null;
     private Point buttonNeuesSpiel = null;
     private Point buttonSize = null;
+    MP3Player background;
 
     @Override
     public void render(Graphics2D g, int width, int height) {
@@ -124,6 +126,9 @@ public class MainMenueActivity extends GameActivity {
 
     @Override
     public void onEnter(Object p) {
+        background = new MP3Player();
+        background.load("/sound/menueBG.mp3");
+        background.playAudio();
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         bgImage = ImageLoader.getScaledImage(ImageLoader.get().image("/gui/menue/mainBG.jpg"), screen.width, screen.height, ImageLoader.MODE_FINE);
         

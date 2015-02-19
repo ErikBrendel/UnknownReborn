@@ -7,6 +7,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+import unknownreborn.UnknownReborn;
 
 public class MP3Player {
 
@@ -15,7 +16,7 @@ public class MP3Player {
     public void load(String file) {
 
         try {
-            URL u = getClass().getResource(file);
+            URL u = UnknownReborn.class.getClass().getResource(file);
             in = AudioSystem.getAudioInputStream(u);
             din = null;
             AudioFormat baseFormat = in.getFormat();
