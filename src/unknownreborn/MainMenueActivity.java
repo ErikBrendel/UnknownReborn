@@ -12,6 +12,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.HashMap;
 import util.ImageLoader;
 import util.MP3Player;
@@ -54,7 +55,7 @@ public class MainMenueActivity extends GameActivity {
         } else {
             g.drawImage(buttonImages.get("beenden"), buttonBeenden.x, buttonBeenden.y, null);
         }
-        
+
         //drawButton(g, buttonBeenden, buttonSize, "Beenden", selectedButton == 2);
         //drawButton(g, buttonOptionen, buttonSize, "Optionen", selectedButton == 1);
         //drawButton(g, buttonNeuesSpiel, buttonSize, "Neues Spiel", selectedButton == 0);
@@ -127,16 +128,18 @@ public class MainMenueActivity extends GameActivity {
     @Override
     public void onEnter(Object p) {
         background = new MP3Player();
-        background.load(getClass().getResource("/sound/menueBG.mp3"));
+        URL u = getClass().getResource("/sound/menueBG.mp3");
+        System.out.println("u = " + u);
+        background.load(u);
         background.playAudio();
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         bgImage = ImageLoader.getScaledImage(ImageLoader.get().image("/gui/menue/mainBG.jpg"), screen.width, screen.height, ImageLoader.MODE_FINE);
-        
+
         buttonSize = new Point(600, 75);
         buttonBeenden = new Point((screen.width - buttonSize.x) / 2, screen.height - 110 - buttonSize.y);
         buttonOptionen = new Point(buttonBeenden.x, buttonBeenden.y - buttonSize.y);
         buttonNeuesSpiel = new Point(buttonOptionen.x, buttonOptionen.y - buttonSize.y);
-        
+
         buttonImages = new HashMap<>();
         buttonImages.put("beenden", ImageLoader.get().image("/gui/menue/btn_beenden.png"));
         buttonImages.put("beendenH", ImageLoader.get().image("/gui/menue/btn_beendenHover.png"));
