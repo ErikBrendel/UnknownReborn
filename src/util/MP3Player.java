@@ -13,10 +13,10 @@ public class MP3Player {
 
     private AudioInputStream in;
 
-    public void load(String file) {
+    public void load(URL u) {
 
         try {
-            URL u = UnknownReborn.class.getClass().getResource(file);
+            //URL u = UnknownReborn.class.getClass().getResource(file);
             in = AudioSystem.getAudioInputStream(u);
             din = null;
             AudioFormat baseFormat = in.getFormat();
@@ -41,7 +41,7 @@ public class MP3Player {
             }
         } catch (Exception ex) {
             System.out.println("Error while loading sound file: " + ex.getMessage());
-            System.out.println("Please check for \"" + file + "\".");
+            System.out.println("Please check for \"" + u + "\".");
         }
     }
 
