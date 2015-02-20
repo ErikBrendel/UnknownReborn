@@ -39,7 +39,9 @@ public class MP3Player {
                             loadData();
                         } while (looping);
                     } else {
-                        p.play();
+                        while (true) {
+                            p.play();
+                        }
                     }
                 } catch (Exception ex) {
                     System.out.println("Error while playing sound file: " + ex.getMessage());
