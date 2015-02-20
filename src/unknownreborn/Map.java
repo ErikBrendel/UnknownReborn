@@ -53,15 +53,25 @@ public class Map {
             String[] splitFileName = tileSetNode.getChildren().get(0).getAttributeValue("source").split("/");
             String name = splitFileName[splitFileName.length - 1];
             System.out.println("name = " + name);
-            
             if (name == null ||name.equals("")) {
                 throw new IOException("Kein Name vergeben.");
             }
             BufferedImage fullTileSet = ImageLoader.get().image("/gui/tilesets/" + name);
+            int imgWidth = fullTileSet.getWidth()/imagePixelSize; //in segments
+            int imgHeight = fullTileSet.getHeight()/imagePixelSize;
+            
+            ArrayList<AnimatedBufferedImage> list = new ArrayList<>();
+            for (int row = 0; row < imgHeight; row++) {
+                for (int x = 0; x < imgWidth; x++) {
+                    BufferedImage segment = fullTileSet.getSubimage(x * imagePixelSize, row * imagePixelSize, imagePixelSize, imagePixelSize);
+                    AnimatedBufferedImage animation = new AnimatedBufferedImage(segment);
+                    list.add(animation);
+                }
+            }
             
             
             
-            return null;
+            return list;
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
