@@ -91,7 +91,7 @@ public class Map {
     private ArrayList<AnimatedBufferedImage> loadTileset(Element tileSetNode) {
         try {
             //String name = tileSetNode.getAttributeValue("name");
-            String[] splitFileName = tileSetNode.getChildren().get(0).getAttributeValue("source").split("/");
+            String[] splitFileName = tileSetNode.getChild("image").getAttributeValue("source").split("/");
             String name = splitFileName[splitFileName.length - 1];
             System.out.println("name = " + name);
             if (name == null ||name.equals("")) {
@@ -114,6 +114,7 @@ public class Map {
             
             return list;
         } catch (Exception ex) {
+            System.out.println("Error in loading Tileset:");
             ex.printStackTrace();
             return null;
         }
