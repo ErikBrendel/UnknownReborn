@@ -127,8 +127,8 @@ public class MainMenueActivity extends GameActivity {
 
     @Override
     public void onEnter(Object p) {
-        background = new MP3Player();
-        background.play("/sound/menueBG.mp3");
+        background = new MP3Player("/sound/menueBG.mp3");
+        background.play(true);
         
         
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();

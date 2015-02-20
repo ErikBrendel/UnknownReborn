@@ -1,26 +1,52 @@
 package util;
 
+import java.io.IOException;
 import java.net.URL;
-import javax.sound.sampled.AudioInputStream;
-import javazoom.jl.player.Player;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.advanced.AdvancedPlayer;
 
 public class MP3Player {
 
-    private AudioInputStream in;
+    private AdvancedPlayer p;
+    private final String path;
 
-    public void play(final String file) {
+    public MP3Player(final String path) {
+        this.path = path;
+        loadData();
+    }
+    
+    private void loadData() {
+        try {
+            URL u = MP3Player.class.getResource(path);
+            System.out.println("u = " + u);
+            p = new AdvancedPlayer(u.openStream());
+        } catch (IOException | JavaLayerException ex) {
+            Logger.getLogger(MP3Player.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void play(final boolean looping) {
         new Thread() {
             public void run() {
                 try {
-                    URL u = MP3Player.class.getResource(file);
-                    System.out.println("u = " + u);
-                    Player p = new Player(u.openStream());
-                    p.play();
+                    if (looping) {
+                        while (true) {
+                            p.play();
+                            loadData();
+                        }
+                    } else {
+                        p.play();
+                    }
                 } catch (Exception ex) {
-                    System.out.println("Error while loading sound file: " + ex.getMessage());
-                    System.out.println("Please check for \"" + file + "\".");
+                    System.out.println("Error while playing sound file: " + ex.getMessage());
                 }
             }
         }.start();
+    }
+    
+    public void stop() {
+        p.stop();
     }
 }
