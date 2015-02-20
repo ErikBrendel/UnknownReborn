@@ -23,10 +23,6 @@ import util.ImageLoader;
  */
 public class Map {
 
-    public static Map loadMapFromResources(String blankFileName) {
-        InputStream fileStream = Map.class.getClassLoader().getResourceAsStream("/maps/" + blankFileName + ".tmx");
-        return new Map(fileStream);
-    }
 
     public Map(InputStream in) {
         try {
@@ -39,7 +35,7 @@ public class Map {
             tileList = new ArrayList<>();
             tileList.add(new AnimatedBufferedImage(new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB))); //the 0-segment (just transparency)
             for (Element e : tilesetElements) {
-                ArrayList<AnimatedBufferedImage> tiles = loadTileset(e);
+                ArrayList<AnimatedBufferedImage> tiles = MapLoader.loadTileset(e);
                 tileList.addAll(tiles);
             }
             
@@ -50,7 +46,6 @@ public class Map {
     }
     private Element rootElement;
     private ArrayList<AnimatedBufferedImage> tileList;
-    private static final int imagePixelSize = 32;
     
     /**
      * gibt das AnimatedBufferedImage zurück, das an genau dieser Stelle sein soll.
@@ -77,46 +72,4 @@ public class Map {
         return tileList.get(tileID);
     }
     
-
-    /**
-     * Lädt die einzelnen Bilder eines Tilesets
-     * 
-     * 
-     * ANIMATIONEN FEHLEN NOCH!
-     * 
-     * 
-     * @param tileSetNode das Element-Objekt des Tilesets
-     * @return eine Liste aller Segment-Bilder des Tilesets
-     */
-    private ArrayList<AnimatedBufferedImage> loadTileset(Element tileSetNode) {
-        try {
-            //String name = tileSetNode.getAttributeValue("name");
-            String[] splitFileName = tileSetNode.getChild("image").getAttributeValue("source").split("/");
-            String name = splitFileName[splitFileName.length - 1];
-            System.out.println("name = " + name);
-            if (name == null ||name.equals("")) {
-                throw new IOException("Kein Name vergeben.");
-            }
-            BufferedImage fullTileSet = ImageLoader.get().image("/gui/tilesets/" + name);
-            int imgWidth = fullTileSet.getWidth()/imagePixelSize; //in segments
-            int imgHeight = fullTileSet.getHeight()/imagePixelSize;
-            
-            ArrayList<AnimatedBufferedImage> list = new ArrayList<>();
-            for (int row = 0; row < imgHeight; row++) {
-                for (int x = 0; x < imgWidth; x++) {
-                    BufferedImage segment = fullTileSet.getSubimage(x * imagePixelSize, row * imagePixelSize, imagePixelSize, imagePixelSize);
-                    AnimatedBufferedImage animation = new AnimatedBufferedImage(segment);
-                    list.add(animation);
-                }
-            }
-            
-            
-            
-            return list;
-        } catch (Exception ex) {
-            System.out.println("Error in loading Tileset:");
-            ex.printStackTrace();
-            return null;
-        }
-    }
 }
