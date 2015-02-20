@@ -31,22 +31,56 @@ public class Map {
     public Map(InputStream in) {
         try {
             SAXBuilder builder = new SAXBuilder();
-            Document document = (Document) builder.build(in);
+            Document document = builder.build(in);
             rootElement = document.getRootElement();
+            
+            //tilesets laden
             ArrayList<Element> tilesetElements = (ArrayList<Element>) rootElement.getChildren("tileset");
-
+            tileList = new ArrayList<>();
+            tileList.add(new AnimatedBufferedImage(new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB))); //the 0-segment (just transparency)
             for (Element e : tilesetElements) {
                 ArrayList<AnimatedBufferedImage> tiles = loadTileset(e);
+                tileList.addAll(tiles);
             }
+            
 
         } catch (JDOMException | IOException ex) {
             Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     private Element rootElement;
-    private ArrayList<AnimatedBufferedImage> tiles;
+    private ArrayList<AnimatedBufferedImage> tileList;
     private static final int imagePixelSize = 32;
+    
+    public AnimatedBufferedImage getImage(String layerName, int x, int y) {
+        ArrayList<Element> layers = (ArrayList<Element>) rootElement.getChildren("layer");
+        Element thisLayer = null;
+        for (Element e: layers) {
+            if(e.getAttributeValue("name").equals(layerName)) {
+                thisLayer = e;
+                break;
+            }
+        }
+        if (thisLayer == null) {
+            return null;
+        }
+        int layerWidth = Integer.valueOf(thisLayer.getAttributeValue("width"));
+        int index = (y * layerWidth) + x;
+        int tileID = Integer.valueOf(thisLayer.getChild("data").getChildren().get(index).getTextTrim());
+        return tileList.get(tileID);
+    }
+    
 
+    /**
+     * Lädt die einzelnen Bilder eines Tilesets
+     * 
+     * 
+     * ANIMATIONEN FEHLEN NOCH!
+     * 
+     * 
+     * @param tileSetNode das Element-Objekt des Tilesets
+     * @return eine Liste aller Segment-Bilder des Tilesets
+     */
     private ArrayList<AnimatedBufferedImage> loadTileset(Element tileSetNode) {
         try {
             //String name = tileSetNode.getAttributeValue("name");
