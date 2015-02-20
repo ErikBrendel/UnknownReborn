@@ -52,6 +52,13 @@ public class Map {
     private ArrayList<AnimatedBufferedImage> tileList;
     private static final int imagePixelSize = 32;
     
+    /**
+     * gibt das AnimatedBufferedImage zurück, das an genau dieser Stelle sein soll.
+     * @param layerName der Name der Ebene
+     * @param x x-Position
+     * @param y y-Position
+     * @return
+     */
     public AnimatedBufferedImage getImage(String layerName, int x, int y) {
         ArrayList<Element> layers = (ArrayList<Element>) rootElement.getChildren("layer");
         Element thisLayer = null;
