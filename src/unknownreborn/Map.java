@@ -15,43 +15,56 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import util.ImageLoader;
 
 /**
  *
  * @author Erik Brendel
  */
 public class Map {
+
     public static Map loadMapFromResources(String blankFileName) {
         InputStream fileStream = Map.class.getClassLoader().getResourceAsStream("/maps/" + blankFileName + ".tmx");
         return new Map(fileStream);
     }
+
     public Map(InputStream in) {
         try {
             SAXBuilder builder = new SAXBuilder();
             Document document = (Document) builder.build(in);
             rootElement = document.getRootElement();
             ArrayList<Element> tilesetElements = (ArrayList<Element>) rootElement.getChildren("tileset");
-            //tilesetElements.
-            
+
+            for (Element e : tilesetElements) {
+                ArrayList<AnimatedBufferedImage> tiles = loadTileset(e);
+            }
+
         } catch (JDOMException | IOException ex) {
             Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     private Element rootElement;
     private ArrayList<AnimatedBufferedImage> tiles;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private ArrayList<AnimatedBufferedImage> loadTileset(String name) {
-        return null;
+    private static final int imagePixelSize = 32;
+
+    private ArrayList<AnimatedBufferedImage> loadTileset(Element tileSetNode) {
+        try {
+            //String name = tileSetNode.getAttributeValue("name");
+            String[] splitFileName = tileSetNode.getChildren().get(0).getAttributeValue("source").split("/");
+            String name = splitFileName[splitFileName.length - 1];
+            System.out.println("name = " + name);
+            
+            if (name == null ||name.equals("")) {
+                throw new IOException("Kein Name vergeben.");
+            }
+            BufferedImage fullTileSet = ImageLoader.get().image("/gui/tilesets/" + name);
+            
+            
+            
+            return null;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 }
