@@ -11,12 +11,13 @@ public class MP3Player {
 
     private AdvancedPlayer p;
     private final String path;
+    private boolean looping = false;
 
     public MP3Player(final String path) {
         this.path = path;
         loadData();
     }
-    
+
     private void loadData() {
         try {
             URL u = MP3Player.class.getResource(path);
@@ -27,15 +28,16 @@ public class MP3Player {
         }
     }
 
-    public void play(final boolean looping) {
+    public void play(final boolean isLooping) {
+        looping = isLooping;
         new Thread() {
             public void run() {
                 try {
                     if (looping) {
-                        while (true) {
+                        do {
                             p.play();
                             loadData();
-                        }
+                        } while (looping);
                     } else {
                         p.play();
                     }
@@ -45,8 +47,9 @@ public class MP3Player {
             }
         }.start();
     }
-    
+
     public void stop() {
+        looping = false;
         p.stop();
     }
 }
