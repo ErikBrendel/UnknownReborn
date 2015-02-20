@@ -12,7 +12,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.HashMap;
 import util.ImageLoader;
 import util.MP3Player;
@@ -128,10 +128,9 @@ public class MainMenueActivity extends GameActivity {
     @Override
     public void onEnter(Object p) {
         background = new MP3Player();
-        URL u = getClass().getResource("/sound/menueBG.mp3");
-        System.out.println("u = " + u);
-        background.load(u);
-        background.playAudio();
+        background.play("/sound/menueBG.mp3");
+        
+        
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         bgImage = ImageLoader.getScaledImage(ImageLoader.get().image("/gui/menue/mainBG.jpg"), screen.width, screen.height, ImageLoader.MODE_FINE);
 
