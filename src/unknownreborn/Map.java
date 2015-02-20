@@ -23,8 +23,6 @@ import org.jdom2.input.SAXBuilder;
 public class Map {
     public static Map loadMapFromResources(String blankFileName) {
         InputStream fileStream = Map.class.getClassLoader().getResourceAsStream("/maps/" + blankFileName + ".tmx");
-        //Scanner s = new Scanner(fileStream).useDelimiter("\\A");
-        //String fileContent = s.hasNext() ? s.next() : "";
         return new Map(fileStream);
     }
     public Map(InputStream in) {
@@ -40,7 +38,7 @@ public class Map {
         }
     }
     private Element rootElement;
-    private ArrayList 
+    private ArrayList<AnimatedBufferedImage> tiles;
     
     
     
@@ -53,7 +51,7 @@ public class Map {
     
     
     
-    private ArrayList<BufferedImage> loadTileset(String name) {
-        
+    private ArrayList<AnimatedBufferedImage> loadTileset(String name) {
+        return null;
     }
 }
