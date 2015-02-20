@@ -5,8 +5,10 @@
  */
 package unknownreborn;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdom2.Document;
@@ -30,13 +32,28 @@ public class Map {
             SAXBuilder builder = new SAXBuilder();
             Document document = (Document) builder.build(in);
             rootElement = document.getRootElement();
-            
-            
-            
+            ArrayList<Element> tilesetElements = (ArrayList<Element>) rootElement.getChildren("tileset");
+            //tilesetElements.
             
         } catch (JDOMException | IOException ex) {
             Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     private Element rootElement;
+    private ArrayList 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    private ArrayList<BufferedImage> loadTileset(String name) {
+        
+    }
 }
