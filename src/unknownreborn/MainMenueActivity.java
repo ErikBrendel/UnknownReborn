@@ -127,12 +127,12 @@ public class MainMenueActivity extends GameActivity {
 
     @Override
     public void onEnter(Object p) {
-        background = new MP3Player("/sound/menueBG.mp3");
+        background = new MP3Player("/resources/sound/menueBG.mp3");
         background.play(true);
         
         
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        bgImage = ImageLoader.getScaledImage(ImageLoader.get().image("/gui/menue/mainBG.jpg"), screen.width, screen.height, ImageLoader.MODE_FINE);
+        bgImage = ImageLoader.getScaledImage(ImageLoader.get().image("/resources/images/menue/mainBG.jpg"), screen.width, screen.height, ImageLoader.MODE_FINE);
 
         buttonSize = new Point(600, 75);
         buttonBeenden = new Point((screen.width - buttonSize.x) / 2, screen.height - 110 - buttonSize.y);
@@ -140,12 +140,12 @@ public class MainMenueActivity extends GameActivity {
         buttonNeuesSpiel = new Point(buttonOptionen.x, buttonOptionen.y - buttonSize.y);
 
         buttonImages = new HashMap<>();
-        buttonImages.put("beenden", ImageLoader.get().image("/gui/menue/btn_beenden.png"));
-        buttonImages.put("beendenH", ImageLoader.get().image("/gui/menue/btn_beendenHover.png"));
-        buttonImages.put("neuesspiel", ImageLoader.get().image("/gui/menue/btn_neuesspiel.png"));
-        buttonImages.put("neuesspielH", ImageLoader.get().image("/gui/menue/btn_neuesspielHover.png"));
-        buttonImages.put("optionen", ImageLoader.get().image("/gui/menue/btn_optionen.png"));
-        buttonImages.put("optionenH", ImageLoader.get().image("/gui/menue/btn_optionenHover.png"));
+        buttonImages.put("beenden", ImageLoader.get().image("/resources/images/menue/btn_beenden.png"));
+        buttonImages.put("beendenH", ImageLoader.get().image("/resources/images/menue/btn_beendenHover.png"));
+        buttonImages.put("neuesspiel", ImageLoader.get().image("/resources/images/menue/btn_neuesspiel.png"));
+        buttonImages.put("neuesspielH", ImageLoader.get().image("/resources/images/menue/btn_neuesspielHover.png"));
+        buttonImages.put("optionen", ImageLoader.get().image("/resources/images/menue/btn_optionen.png"));
+        buttonImages.put("optionenH", ImageLoader.get().image("/resources/images/menue/btn_optionenHover.png"));
     }
 
     @Override

@@ -53,6 +53,7 @@ public class ActivityManager {
 
     /**
      * eine aktive activity aus dem activeStack entfernen
+     *
      * @param name
      */
     public void removeActivity(String name) {
@@ -61,6 +62,9 @@ public class ActivityManager {
             remove.onExit();
             activeStack.remove(remove);
         }
+    }
+
+    public void update(long delta) {
     }
 
     /**
@@ -72,7 +76,7 @@ public class ActivityManager {
      */
     public void render(Graphics2D g, int w, int h) {
         //der reihe nach alle aus der liste übereinander rendern lassen
-        for (GameActivity a: activeStack) {
+        for (GameActivity a : activeStack) {
             a.render(g, w, h);
         }
     }
@@ -84,7 +88,7 @@ public class ActivityManager {
             i--;
             a = activeStack.get(i);
         } while (!a.onKeyPressed(e));
-        
+
     }
 
     public void keyReleased(KeyEvent e) {
