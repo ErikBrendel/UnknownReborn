@@ -15,7 +15,7 @@ import java.util.HashMap;
  * @author Erik Brendel
  */
 public class ActivityManager {
-
+    
     public ActivityManager() {
         activities = new HashMap<>();
         activeStack = new ArrayList<>();
@@ -99,5 +99,4 @@ public class ActivityManager {
             a = activeStack.get(i);
         } while (!a.onKeyReleased(e));
     }
-
 }

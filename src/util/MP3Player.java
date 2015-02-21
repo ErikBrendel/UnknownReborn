@@ -52,6 +52,5 @@ public class MP3Player {
 
     public void stop() {
         looping = false;
-        p.stop();
     }
 }

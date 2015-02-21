@@ -112,7 +112,7 @@ public class MainMenueActivity extends GameActivity {
     private void launchButtonEvent(int buttonID) {
         switch (buttonID) {
             case maxSelectedButton:
-                System.exit(0);
+                UnknownReborn.isRunning = false;
         }
     }
 
@@ -127,8 +127,8 @@ public class MainMenueActivity extends GameActivity {
 
     @Override
     public void onEnter(Object p) {
-        background = new MP3Player("/resources/sound/menueBG.mp3");
-        background.play(true);
+       // background = new MP3Player("/resources/sound/menueBG.mp3"); -> funktioniert noch nicht richtig, der Thread wird nicht sofort beendet
+        //background.play(true);
         
         
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -155,5 +155,6 @@ public class MainMenueActivity extends GameActivity {
         buttonOptionen = null;
         buttonNeuesSpiel = null;
         buttonImages = null;
+       // background.stop();
     }
 }

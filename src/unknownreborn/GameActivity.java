@@ -14,9 +14,9 @@ import java.awt.event.KeyEvent;
  * 
  */
 public abstract class GameActivity {
-    final ActivityManager myManager;
+    final ActivityManager manager;
     public GameActivity(ActivityManager manager) {
-        myManager = manager;
+        this.manager = manager;
     }
 
     /**
