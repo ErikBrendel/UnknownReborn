@@ -31,9 +31,6 @@ public class Window extends JFrame {
         panel = new GamePanel(manager);
     }
 
-    /**
-     * fenster laden
-     */
     public void initialisation() {
         this.setUndecorated(true);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -46,9 +43,6 @@ public class Window extends JFrame {
         this.getContentPane().setCursor(blankCursor);
     }
 
-    /**
-     * fenster anzeigen
-     */
     public void makeVisible() {
         this.setVisible(true);
     }
@@ -57,25 +51,14 @@ public class Window extends JFrame {
         this.fps = fps;
     }
 
-    /**
-     * das JPanel im JFrame, in dem alles passiert
-     */
     private class GamePanel extends JPanel implements KeyListener {
 
         ActivityManager manager;
 
-        /**
-         * den activityManager übergeben
-         *
-         * @param manager der manager
-         */
         public GamePanel(ActivityManager manager) {
             this.manager = manager;
         }
 
-        /**
-         * nutzt die render-methode des activityManagers
-         */
         @Override
         public void paint(Graphics g) {
             manager.render((Graphics2D) g, getWidth(), getHeight());
@@ -95,7 +78,6 @@ public class Window extends JFrame {
 
         @Override
         public void keyTyped(KeyEvent e) {
-            //do nothing
         }
     }
 }
