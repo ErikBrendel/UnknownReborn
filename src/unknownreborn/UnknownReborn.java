@@ -1,6 +1,8 @@
 package unknownreborn;
 
-import Activities.*;
+import Activities.ActivityManager;
+import Activities.ConfirmExitWindow;
+import Activities.MainMenueActivity;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.MP3Player;
