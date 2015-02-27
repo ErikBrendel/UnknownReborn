@@ -64,6 +64,28 @@ public class ActivityManager {
             activeStack.remove(remove);
         }
     }
+    
+    /**
+     * entfernt die oberste (zuletzt eingefügte) Activity aus dem active-Stack
+     * @return ob es eine activity gab, die entfernt wurde
+     */
+    public boolean removeUpperActivity() {
+        if(activeStack.size() > 1) { //damit die ACTIVITY_EMPTY, die ganz unten ist, nicht verschwindet
+            activeStack.remove(activeStack.size() - 1).onExit();
+        } else {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * entfernt alle activities aus dem active-Stack (außer die unterste)
+     */
+    public void clearActivityStack() {
+        while(removeUpperActivity()) {
+            
+        }
+    }
 
     public void update(long delta) {
     }
