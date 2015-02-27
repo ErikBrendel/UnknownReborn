@@ -41,14 +41,17 @@ public class ActivityManager {
      *
      * @param name the name of the new activity
      * @param parameter die parameter, die der activity übergeben werden sollen
+     * @return ob tatsächlich eine Activity mit diesem Namen entfernt wurde
      */
-    public void showActivity(String name, Object parameter) {
+    public boolean showActivity(String name, Object parameter) {
         GameActivity newActivity = activities.get(name);
         if (newActivity == null) { //wenn die activity nicht vorhanden
             System.out.println("No activity called " + name);
+            return false;
         } else {
             newActivity.onEnter(parameter);
             activeStack.add(newActivity);
+            return true;
         }
     }
 
