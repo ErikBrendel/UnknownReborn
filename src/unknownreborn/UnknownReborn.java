@@ -1,5 +1,7 @@
 package unknownreborn;
 
+import Activities.ActivityManager;
+import Activities.MainMenueActivity;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

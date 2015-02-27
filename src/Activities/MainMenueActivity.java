@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package unknownreborn;
+package Activities;
 
+import Activities.GameActivity;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -14,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.HashMap;
+import unknownreborn.UnknownReborn;
 import util.ImageLoader;
 import util.MP3Player;
 
