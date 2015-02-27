@@ -13,11 +13,11 @@ import util.ImageLoader;
 
 /**
  * Ein animiertes BufferedImage
- * 
- * 
+ *
+ *
  * DIE GETTICK METHODE MUSS NOCH GEFÜLLT WERDEN!!!!!!
- * 
- * 
+ *
+ *
  * @author Erik Brendel
  */
 public class AnimatedBufferedImage {
@@ -28,7 +28,7 @@ public class AnimatedBufferedImage {
     private final int pauseMS;
     private boolean loop = false;
     private Point oldDimension = new Point(0, 0);
-    private boolean started = true;
+    private boolean started = true; //ob die animation schon läuft
 
     public BufferedImage getBufferedImage(Point dimension) {
         if (dimension.x != oldDimension.x || dimension.y != oldDimension.y) { //rescale
@@ -36,7 +36,7 @@ public class AnimatedBufferedImage {
             oldDimension = dimension;
             rescaleGif();
         }
-        if(!started) {
+        if (!started) {
             return scaledImageList.get(0); //first one if not started
         }
 
@@ -62,7 +62,7 @@ public class AnimatedBufferedImage {
     }
 
     private void rescaleGif() {
-        
+
         scaledImageList.clear();
         for (BufferedImage orig : imageList) {
             scaledImageList.add(ImageLoader.getScaledImage(orig, oldDimension.x, oldDimension.y, ImageLoader.MODE_FAST));
@@ -80,6 +80,7 @@ public class AnimatedBufferedImage {
         this.pauseMS = pauseMS;
         imageList.add(convert(img));
     }
+
     public AnimatedBufferedImage(BufferedImage img) {
         this.pauseMS = 100;
         imageList.add(convert(img));
@@ -111,7 +112,27 @@ public class AnimatedBufferedImage {
         startTick = Long.MIN_VALUE;
         started = false;
     }
-    private long getTick() {
-        return 0l;
+
+    private static boolean ticking = false;
+    private static long tick = 0l;
+
+    private static long getTick() {
+        if (ticking) {
+            return tick;
+        } else {
+            ticking = true;
+            new Thread() {
+                public void run() {
+                    while (ticking) {
+                        tick++;
+                        try {
+                            Thread.sleep(1);
+                        } catch (Exception ex) {
+                        }
+                    }
+                }
+            }.start();
+            return 0l;
+        }
     }
 }
