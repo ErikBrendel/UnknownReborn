@@ -6,11 +6,13 @@
 package Activities;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import unknownreborn.UnknownReborn;
-import util.GraphicsMethods;
+import static util.GraphicsMethods.drawInnerBounds;
+import util.StringMetrics;
 
 /**
  *
@@ -27,18 +29,24 @@ public class ConfirmExitWindow extends GameActivity {
 
     @Override
     public void render(Graphics2D g, int width, int height) {
-        Point size = new Point(300, 200);
+        Point size = new Point(400, 200);
         Point start = new Point((width - size.x) / 2, (height - size.y) / 2);
-        g.setColor(Color.BLACK);
+        g.setColor(new Color(0, 0, 0, 230));
         g.fillRect(start.x, start.y, size.x, size.y);
         g.setColor(Color.WHITE);
-        GraphicsMethods.drawInnerBounds(g, start, size, 5);
+        drawInnerBounds(g, start, size, 5);
+
+        Dimension msgDimensions = StringMetrics.getBounds(g, msg);
+        g.drawString(msg, (width - msgDimensions.width) / 2, start.y + 50);
     }
 
     @Override
     public boolean onKeyPressed(KeyEvent e) {
-        UnknownReborn.isRunning = false;
         switch (e.getKeyCode()) {
+            case KeyEvent.VK_ENTER:
+                UnknownReborn.isRunning = false;
+                break;
+
         }
         return true;
     }
