@@ -10,8 +10,11 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 
 public class MP3Player {
 
+    public static final boolean AUDIO_ENABLED = true;
+
     /**
-     * alle aktiven Player (also eigentlich alle, die komplette players-liste) werden angehalten.
+     * alle aktiven Player (also eigentlich alle, die komplette players-liste)
+     * werden angehalten.
      */
     public static void stopAllAudio() {
         for (MP3Player p : players) {
@@ -44,23 +47,25 @@ public class MP3Player {
     }
 
     public void play(final boolean isLooping) {
-        looping = isLooping;
-        new Thread() {
-            public void run() {
-                try {
-                    if (looping) {
-                        do {
+        if (AUDIO_ENABLED) {
+            looping = isLooping;
+            new Thread() {
+                public void run() {
+                    try {
+                        if (looping) {
+                            do {
+                                p.play();
+                                loadData();
+                            } while (looping);
+                        } else {
                             p.play();
-                            loadData();
-                        } while (looping);
-                    } else {
-                        p.play();
+                        }
+                    } catch (Exception ex) {
+                        System.out.println("Error while playing sound file: " + ex.getMessage());
                     }
-                } catch (Exception ex) {
-                    System.out.println("Error while playing sound file: " + ex.getMessage());
                 }
-            }
-        }.start();
+            }.start();
+        }
     }
 
     public void stop() {
