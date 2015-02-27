@@ -10,6 +10,9 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 
 public class MP3Player {
 
+    /**
+     * alle aktiven Player (also eigentlich alle, die komplette players-liste) werden angehalten.
+     */
     public static void stopAllAudio() {
         for (MP3Player p : players) {
             try {
@@ -18,7 +21,7 @@ public class MP3Player {
             }
         }
     }
-    private static ArrayList<MP3Player> players = new ArrayList<>();
+    private static final ArrayList<MP3Player> players = new ArrayList<>();
 
     private AdvancedPlayer p;
     private final String path;
