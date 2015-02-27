@@ -2,6 +2,7 @@ package util;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javazoom.jl.decoder.JavaLayerException;
@@ -9,11 +10,22 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 
 public class MP3Player {
 
+    public static void stopAllAudio() {
+        for (MP3Player p : players) {
+            try {
+                p.stop();
+            } catch (Exception e) {
+            }
+        }
+    }
+    private static ArrayList<MP3Player> players = new ArrayList<>();
+
     private AdvancedPlayer p;
     private final String path;
     private boolean looping = false;
 
     public MP3Player(final String path) {
+        players.add(this);
         this.path = path;
         loadData();
     }
@@ -39,9 +51,7 @@ public class MP3Player {
                             loadData();
                         } while (looping);
                     } else {
-                        while (true) {
-                            p.play();
-                        }
+                        p.play();
                     }
                 } catch (Exception ex) {
                     System.out.println("Error while playing sound file: " + ex.getMessage());
@@ -52,5 +62,6 @@ public class MP3Player {
 
     public void stop() {
         looping = false;
+        p.close();
     }
 }

@@ -4,6 +4,7 @@ import Activities.ActivityManager;
 import Activities.MainMenueActivity;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.MP3Player;
 
 /**
  *
@@ -69,6 +70,7 @@ public class UnknownReborn implements Runnable {
     }
     
     private void stopGame() {
+        MP3Player.stopAllAudio();
         window.dispose();
         manager.removeActivity("mainMenue");
     }

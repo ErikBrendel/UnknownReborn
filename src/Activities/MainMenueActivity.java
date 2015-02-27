@@ -129,10 +129,9 @@ public class MainMenueActivity extends GameActivity {
 
     @Override
     public void onEnter(Object p) {
-       // background = new MP3Player("/resources/sound/menueBG.mp3"); -> funktioniert noch nicht richtig, der Thread wird nicht sofort beendet
-        //background.play(true);
-        
-        
+        background = new MP3Player("/resources/sound/menueBG.mp3");// -> behoben :) mfg Erik
+        background.play(true);
+
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         bgImage = ImageLoader.getScaledImage(ImageLoader.get().image("/resources/images/menue/mainBG.jpg"), screen.width, screen.height, ImageLoader.MODE_FINE);
 
@@ -157,6 +156,6 @@ public class MainMenueActivity extends GameActivity {
         buttonOptionen = null;
         buttonNeuesSpiel = null;
         buttonImages = null;
-       // background.stop();
+        // background.stop();
     }
 }
