@@ -114,7 +114,7 @@ public class MainMenueActivity extends GameActivity {
     private void launchButtonEvent(int buttonID) {
         switch (buttonID) {
             case maxSelectedButton:
-                UnknownReborn.isRunning = false;
+                manager.showActivity("confirmExitWindow", "Do you really want to exit?");
         }
     }
 

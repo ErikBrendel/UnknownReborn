@@ -1,7 +1,6 @@
 package unknownreborn;
 
-import Activities.ActivityManager;
-import Activities.MainMenueActivity;
+import Activities.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.MP3Player;
@@ -37,6 +36,7 @@ public class UnknownReborn implements Runnable {
 
     public void gameInitialisation() {
         manager.loadActivity(new MainMenueActivity(manager), "mainMenue");
+        manager.loadActivity(new ConfirmExitWindow(manager), "confirmExitWindow");
         manager.showActivity("mainMenue", null);
         
         window.initialisation();
