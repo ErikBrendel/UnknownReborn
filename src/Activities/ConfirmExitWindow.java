@@ -25,7 +25,7 @@ public class ConfirmExitWindow extends GameActivity {
     }
 
     private String msg;
-    private boolean firstSelected;
+    private boolean trueSelected;
 
     @Override
     public void render(Graphics2D g, int width, int height) {
@@ -38,13 +38,38 @@ public class ConfirmExitWindow extends GameActivity {
 
         Dimension msgDimensions = StringMetrics.getBounds(g, msg);
         g.drawString(msg, (width - msgDimensions.width) / 2, start.y + 50);
+        
+        if (trueSelected) {
+            g.setColor(Color.YELLOW);
+        }
+        g.drawString("Ja", start.x + 50, start.y + size.y - 50);
+        
+        if(trueSelected) {
+            g.setColor(Color.WHITE);
+        } else {
+            g.setColor(Color.YELLOW);
+        }
+        g.drawString("Nein", width/2, start.y + size.y - 50);
+                
     }
 
     @Override
     public boolean onKeyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
+            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_LEFT:
+                trueSelected = !trueSelected;
+                break;
             case KeyEvent.VK_ENTER:
-                UnknownReborn.isRunning = false;
+                if (trueSelected) {
+                    UnknownReborn.isRunning = false;
+                } else {
+                    manager.removeActivity("confirmExitWindow");
+                    //oder manager.removeUpperActivity();
+                }
+                break;
+            case KeyEvent.VK_ESCAPE:
+                manager.removeActivity("confirmExitWindow");
                 break;
 
         }
@@ -62,7 +87,7 @@ public class ConfirmExitWindow extends GameActivity {
 
     @Override
     public void onEnter(Object p) {
-        firstSelected = false;
+        trueSelected = false;
         msg = "Error no MSG";
         try {
             msg = (String) p;
@@ -74,6 +99,6 @@ public class ConfirmExitWindow extends GameActivity {
     @Override
     public void onExit() {
         msg = null;
-        firstSelected = false;
+        trueSelected = false;
     }
 }
