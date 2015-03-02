@@ -11,7 +11,7 @@ import util.MP3Player;
  *
  * @author Erik Brendel
  */
-public class UnknownReborn implements Runnable {
+public class UnknownReborn implements Runnable { 
 
     ActivityManager manager = null;
     Window window = null;
