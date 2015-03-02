@@ -5,7 +5,6 @@
  */
 package Activities;
 
-import Activities.GameActivity;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -13,9 +12,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
 import java.util.HashMap;
-import unknownreborn.UnknownReborn;
 import util.ImageLoader;
 import util.MP3Player;
 
@@ -57,28 +54,8 @@ public class MainMenueActivity extends GameActivity {
         } else {
             g.drawImage(buttonImages.get("beenden"), buttonBeenden.x, buttonBeenden.y, null);
         }
-
-        //drawButton(g, buttonBeenden, buttonSize, "Beenden", selectedButton == 2);
-        //drawButton(g, buttonOptionen, buttonSize, "Optionen", selectedButton == 1);
-        //drawButton(g, buttonNeuesSpiel, buttonSize, "Neues Spiel", selectedButton == 0);
     }
 
-    /**
-     * draws one button with that grafics object
-     *
-     * @param g the graphics to paint with
-     * @param start the upper left start corner of the button
-     * @param size the size of the button
-     * @param text the text to be displayed on
-     * @param selected if it is selected
-     */
-    public void drawButton(Graphics2D g, Point start, Point size, String text, boolean selected) {
-        g.setColor(Color.BLACK);
-        if (selected) {
-            g.setColor(Color.GRAY);
-        }
-        g.fillRect(start.x, start.y, size.x, size.y);
-    }
 
     int selectedButton = 0;
     final int maxSelectedButton = 2;
