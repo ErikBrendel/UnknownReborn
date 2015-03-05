@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
+import unknownreborn.AnimatedBufferedImage;
 import unknownreborn.Map;
 import util.FloatPoint;
 
@@ -58,7 +59,8 @@ public class MapActivity extends GameActivity {
 
                 //jede ebene an diese Stelle übereinander malen
                 for (String layerName : layers) {
-                    BufferedImage img = activeMap.getImage(layerName, x, y).getBufferedImage(new Point(pixelsForOneSegment, pixelsForOneSegment));
+                    AnimatedBufferedImage aimg = activeMap.getImage(layerName, x, y);
+                    BufferedImage img = aimg.getBufferedImage(new Point(pixelsForOneSegment, pixelsForOneSegment));
                     g.drawImage(img, drawX, drawY, null);
                 }
 
@@ -71,6 +73,22 @@ public class MapActivity extends GameActivity {
     @Override
     public boolean onKeyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
+            case KeyEvent.VK_W:
+            case KeyEvent.VK_UP:
+                playerLocation.y -= 0.5f;
+                break;
+            case KeyEvent.VK_S:
+            case KeyEvent.VK_DOWN:
+                playerLocation.y += 0.5f;
+                break;
+            case KeyEvent.VK_D:
+            case KeyEvent.VK_RIGHT:
+                playerLocation.x += 0.5f;
+                break;
+            case KeyEvent.VK_A:
+            case KeyEvent.VK_LEFT:
+                playerLocation.x -= 0.5f;
+                break;
         }
         return true;
     }
