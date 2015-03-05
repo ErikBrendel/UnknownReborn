@@ -89,6 +89,12 @@ public class MapActivity extends GameActivity {
             case KeyEvent.VK_LEFT:
                 playerLocation.x -= 0.5f;
                 break;
+            case KeyEvent.VK_PLUS:
+                mapSightRange /= 1.1f;
+                break;
+            case KeyEvent.VK_MINUS:
+                mapSightRange *= 1.1f;
+                break;
         }
         return true;
     }

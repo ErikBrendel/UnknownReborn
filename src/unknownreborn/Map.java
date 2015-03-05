@@ -35,25 +35,27 @@ public class Map {
      * @return
      */
     public AnimatedBufferedImage getImage(String layerName, int x, int y) {
-        try {
-            List<Element> layers = rootElement.getChildren("layer");
-            Element thisLayer = null;
-            for (Element e : layers) {
-                if (e.getAttributeValue("name").equals(layerName)) {
-                    thisLayer = e;
-                    break;
-                }
-            }
-            if (thisLayer == null) {
-                return emptyAnimation;
-            }
-            int layerWidth = Integer.valueOf(thisLayer.getAttributeValue("width"));
-            int index = (y * layerWidth) + x;
-            int tileID = Integer.valueOf(thisLayer.getChild("data").getChildren().get(index).getAttributeValue("gid"));
-            return tileList.get(tileID);
-        } catch (Exception ex) { //teilweise werden bilder von außerhalb der Map abgefragt
+        if(x < 0 || x >= getDimensions().x) {
             return emptyAnimation;
         }
+        if(y < 0 || y >= getDimensions().y) {
+            return emptyAnimation;
+        }
+        List<Element> layers = rootElement.getChildren("layer");
+        Element thisLayer = null;
+        for (Element e : layers) {
+            if (e.getAttributeValue("name").equals(layerName)) {
+                thisLayer = e;
+                break;
+            }
+        }
+        if (thisLayer == null) {
+            return emptyAnimation;
+        }
+        int layerWidth = Integer.valueOf(thisLayer.getAttributeValue("width"));
+        int index = (y * layerWidth) + x;
+        int tileID = Integer.valueOf(thisLayer.getChild("data").getChildren().get(index).getAttributeValue("gid"));
+        return tileList.get(tileID);
     }
 
     public static final AnimatedBufferedImage emptyAnimation = new AnimatedBufferedImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
