@@ -26,7 +26,7 @@ public class MapActivity extends GameActivity {
 
     @Override
     public void render(Graphics2D g, int width, int height) {
-        int pixelsForOneSegment = (int)Math.round((double) (width) / mapSightRange);
+        double pixelsForOneSegment = (double) (width) / mapSightRange;
         DoublePoint sizeKoord = new DoublePoint(mapSightRange, mapSightRange / (double) (width) * (double) (height)); //Die Größe des Bildschirms in Kachelkoordinaten
         DoublePoint startKoord = new DoublePoint(playerLocation.x - (sizeKoord.x / 2f), playerLocation.y - (sizeKoord.y / 2f)); //ecke oben links des Bildschirms, in Kachelkoordinaten umgerechnet
 
@@ -55,21 +55,21 @@ public class MapActivity extends GameActivity {
             for (int x = startKachel.x; x <= endKachel.x; x++) {
 
                 //zuerst die koordinaten des Malpunktes bestimmen (in px)
-                int drawX = (int) Math.round(((double) (x) - startKoord.x) * (double) (pixelsForOneSegment));
-                int drawY = (int) Math.round(((double) (y) - startKoord.y) * (double) (pixelsForOneSegment));
+                int drawX = (int) Math.round(((double) (x) - startKoord.x) * pixelsForOneSegment);
+                int drawY = (int) Math.round(((double) (y) - startKoord.y) * pixelsForOneSegment);
 
                 //jede ebene an diese Stelle übereinander malen
                 for (String layerName : layers) {
                     AnimatedBufferedImage aimg = activeMap.getImage(layerName, x, y);
-                    BufferedImage img = aimg.getBufferedImage(new Point(pixelsForOneSegment, pixelsForOneSegment));
+                    BufferedImage img = aimg.getBufferedImage(new Point((int)Math.round(pixelsForOneSegment) + 1, (int)Math.round(pixelsForOneSegment) + 1)); //plus 1, damit sich die bilder leicht überlappen.... sonst gibt es hässliche weiße linien
                     g.drawImage(img, drawX, drawY, null);
                 }
 
             }
         }
         //roter punkt für den spieler
-        int drawX = (int) Math.round((playerLocation.x - startKoord.x) * (double) (pixelsForOneSegment));
-        int drawY = (int) Math.round((playerLocation.y - startKoord.y) * (double) (pixelsForOneSegment));
+        int drawX = (int) Math.round((playerLocation.x - startKoord.x) * pixelsForOneSegment);
+        int drawY = (int) Math.round((playerLocation.y - startKoord.y) * pixelsForOneSegment);
         g.setColor(Color.red);
         g.fillOval(drawX - 5, drawY - 5, 10, 10);
 
