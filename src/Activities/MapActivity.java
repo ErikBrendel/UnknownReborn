@@ -6,7 +6,6 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import unknownreborn.AnimatedBufferedImage;
 import unknownreborn.Map;
 import util.DoublePoint;
