@@ -1,5 +1,7 @@
 package Activities;
 
+import Entity.Entity;
+import Entity.PlayerEntity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -21,15 +23,17 @@ public class MapActivity extends GameActivity {
     }
 
     private Map activeMap;
-    private DoublePoint playerLocation;
-    private int playerDirection = 10;
+    public DoublePoint getFocusLocation() {
+        return playerEntity.getLocation();
+    }
+    private PlayerEntity playerEntity;
     private double mapSightRange = 16f; //wie breit das Sichtfenster ist (in mapSegmenten)
 
     @Override
     public void render(Graphics2D g, int width, int height) {
         double pixelsForOneSegment = (double) (width) / mapSightRange;
         DoublePoint sizeKoord = new DoublePoint(mapSightRange, mapSightRange / (double) (width) * (double) (height)); //Die Größe des Bildschirms in Kachelkoordinaten
-        DoublePoint startKoord = new DoublePoint(playerLocation.x - (sizeKoord.x / 2f), playerLocation.y - (sizeKoord.y / 2f)); //ecke oben links des Bildschirms, in Kachelkoordinaten umgerechnet
+        DoublePoint startKoord = new DoublePoint(getFocusLocation().x - (sizeKoord.x / 2f), getFocusLocation().y - (sizeKoord.y / 2f)); //ecke oben links des Bildschirms, in Kachelkoordinaten umgerechnet
 
         //wir wollen ja keinen schwarzen bildschirm zeigen... wenn wir an der ecke sind, "hält diese den Bildschirm vom weiterscrollen ab"
         if (startKoord.x < 0) {
@@ -70,10 +74,10 @@ public class MapActivity extends GameActivity {
             }
         }
         //roter punkt für den spieler
-        int playerX = (int) Math.round((playerLocation.x - startKoord.x) * pixelsForOneSegment);
-        int playerY = (int) Math.round((playerLocation.y - startKoord.y) * pixelsForOneSegment);
-        g.setColor(Color.red);
-        g.fillOval(playerX - 10, playerY - 10, 20, 20);
+        int playerX = (int) Math.round((getFocusLocation().x - startKoord.x) * pixelsForOneSegment);
+        int playerY = (int) Math.round((getFocusLocation().y - startKoord.y) * pixelsForOneSegment);
+        g.setColor(Color.blue);
+        g.fillOval(playerX - 10, playerY - 10, 20, 20); /* */
 
         //entities malen.... noch keine ahnung wie :D
         /*
@@ -81,6 +85,18 @@ public class MapActivity extends GameActivity {
          E N T I T I E S ! 
         
          */
+        for (Entity entity: activeMap.getAllEntities()) {
+            if(true/* wenn es gemalt werden muss */) {
+                BufferedImage entityImg = entity.getScaledImage(pixelsForOneSegment);
+                
+                int entityX = (int) Math.round((entity.getLocation().x - startKoord.x - (entity.getDimensions().x/2d)) * pixelsForOneSegment);
+                int entityY = (int) Math.round((entity.getLocation().y - startKoord.y - (entity.getDimensions().x/2d)) * pixelsForOneSegment);
+                
+                g.drawImage(entityImg, entityX, entityY, null);
+            }
+        }
+        
+        
         //alle vorderen sachen malen, wie palmblätter usw
         for (int y = startKachel.y; y <= endKachel.y; y++) {
             for (int x = startKachel.x; x <= endKachel.x; x++) {
@@ -101,19 +117,19 @@ public class MapActivity extends GameActivity {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
             case KeyEvent.VK_UP:
-                move(0, true);
+                playerEntity.move(0, true, activeMap);
                 break;
             case KeyEvent.VK_D:
             case KeyEvent.VK_RIGHT:
-                move(2, true);
+                playerEntity.move(2, true, activeMap);
                 break;
             case KeyEvent.VK_S:
             case KeyEvent.VK_DOWN:
-                move(4, true);
+                playerEntity.move(4, true, activeMap);
                 break;
             case KeyEvent.VK_A:
             case KeyEvent.VK_LEFT:
-                move(6, true);
+                playerEntity.move(6, true, activeMap);
                 break;
             case KeyEvent.VK_PLUS:
                 mapSightRange /= 1.1f;
@@ -125,116 +141,25 @@ public class MapActivity extends GameActivity {
         return true;
     }
 
-    private static final double moveSizePerTick = 0.005d;
-    private static final double moveSizePerTickLittle = Math.sqrt((moveSizePerTick * moveSizePerTick) / 2);
-
-    /**
-     * ändert die Bewegung des Spielers
-     *
-     * @param newDirection 0 ist up, 2 ist rechst, 4 ist unten und 6 ist
-     * links,.... die werte dazwischen sind für allgemeine drehungen für
-     * objekte.... ich wollte halt die richtungsangaben programmweit einheitlich
-     * lassen
-     * @param startNotStop start heißt loslaufen, wenn false dannn anhalten
-     */
-    public void move(int newDirection, boolean startNotStop) {
-        if (startNotStop) {
-            pressedDirections.add(newDirection);
-        } else {
-            pressedDirections.remove(newDirection);
-        }
-        playerDirection = 0;
-        for (Object o : pressedDirections.toArray()) {
-            playerDirection += (int) o;
-        }
-        if (pressedDirections.isEmpty() || pressedDirections.size() > 2 || 
-                (pressedDirections.contains(0) && pressedDirections.contains(4)) || 
-                (pressedDirections.contains(2) && pressedDirections.contains(6))) {
-            playerDirection = 10;
-        } else {
-            if (pressedDirections.contains(0) && pressedDirections.contains(6)) {
-                playerDirection = 7;
-            } else {
-                playerDirection = playerDirection / pressedDirections.size();
-            }
-        }
-
-        if (!moveThreadRunning && startNotStop) {
-            moveThreadRunning = true;
-            //start moving thread
-            new Thread() {
-                public void run() {
-                    do {
-                        DoublePoint oldPlayerLocation = new DoublePoint(playerLocation);
-                        switch (playerDirection) {
-                            case 0:
-                                playerLocation.y -= moveSizePerTick;
-                                break;
-                            case 1:
-                                playerLocation.y -= moveSizePerTickLittle;
-                                playerLocation.x += moveSizePerTickLittle;
-                                break;
-                            case 2:
-                                playerLocation.x += moveSizePerTick;
-                                break;
-                            case 3:
-                                playerLocation.y += moveSizePerTickLittle;
-                                playerLocation.x += moveSizePerTickLittle;
-                                break;
-                            case 4:
-                                playerLocation.y += moveSizePerTick;
-                                break;
-                            case 5:
-                                playerLocation.y += moveSizePerTickLittle;
-                                playerLocation.x -= moveSizePerTickLittle;
-                                break;
-                            case 6:
-                                playerLocation.x -= moveSizePerTick;
-                                break;
-                            case 7:
-                                playerLocation.y -= moveSizePerTickLittle;
-                                playerLocation.x -= moveSizePerTickLittle;
-                                break;
-                        }
-                        
-                        if(!activeMap.isWalkable(playerLocation, null)) {
-                            playerLocation = oldPlayerLocation;
-                        }
-
-                        try {
-                            Thread.sleep(1);
-                        } catch (Exception ex) {
-
-                        }
-                    } while (moveThreadRunning);
-                }
-            }.start();
-        }
-    }
-    private boolean moveThreadRunning = false;
-    private HashSet<Integer> pressedDirections = new HashSet<>();
-    
-    
-    
 
     @Override
     public boolean onKeyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
             case KeyEvent.VK_UP:
-                move(0, false);
+                playerEntity.move(0, false, activeMap);
                 break;
             case KeyEvent.VK_D:
             case KeyEvent.VK_RIGHT:
-                move(2, false);
+                playerEntity.move(2, false, activeMap);
                 break;
             case KeyEvent.VK_S:
             case KeyEvent.VK_DOWN:
-                move(4, false);
+                playerEntity.move(4, false, activeMap);
                 break;
             case KeyEvent.VK_A:
             case KeyEvent.VK_LEFT:
-                move(6, false);
+                playerEntity.move(6, false, activeMap);
                 break;
         }
         return true;
@@ -255,7 +180,12 @@ public class MapActivity extends GameActivity {
         try {
             ArrayList<Object> ps = (ArrayList<Object>) p;
             activeMap = (Map) ps.get(0);
-            playerLocation = (DoublePoint) ps.get(1);
+            for(Entity e: activeMap.getAllEntities()) {
+                if (e instanceof PlayerEntity) {
+                    playerEntity = (PlayerEntity) e;
+                    System.out.println("playerEntity = " + playerEntity);
+                }
+            }
         } catch (Exception ex) {
             System.out.println("Wrong parameters for the MapActivity!");
             ex.printStackTrace();

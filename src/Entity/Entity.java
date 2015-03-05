@@ -8,6 +8,7 @@ package Entity;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import util.DoublePoint;
+import util.ImageLoader;
 
 /**
  *
@@ -27,15 +28,32 @@ public abstract class Entity {
         location = newLoc;
     }
 
-    public BufferedImage getImage() {
-        //create a new bufferedImage using getDimensions()
-        return null;
+    /**
+     * gibt das Bild dieses Entitys zurück. Dieses sollte die Größe aus
+     * getDimension mal 32 besitzen... also 32x32 Pixel pro Kachelkoordinate
+     *
+     * @return das aktuelle Bild des entities
+     */
+    public abstract BufferedImage getImage();
+    
+    public BufferedImage getScaledImage(double pixelsPerSegment) {
+        BufferedImage small = getImage();
+        return ImageLoader.getScaledImage(small, (int)Math.round(small.getWidth() * pixelsPerSegment / 32d), (int)Math.round(small.getHeight() * pixelsPerSegment / 32d), ImageLoader.MODE_FAST);
     }
 
-    public Point getDimensions() {
-        return null;
-    }
+    /**
+     * gibt die Dimensionen des BufferedImages aus getImage() zurück, um im
+     * vornhinein überprüfen zu können, ob es gemalt werden muss. Werte in Kachelkoordinaten
+     *
+     * @return die aktuellen Abmaße des Bildes des Entitys
+     */
+    public abstract DoublePoint getDimensions();
 
+    /**
+     * gibt dem Entity ein MoveComponent, welches es bewegt
+     *
+     * @param c das MoveComponent
+     */
     public void setMoveComponent(MoveComponent c) {
         myMoveComponent = c;
         c.e = this;
@@ -47,6 +65,13 @@ public abstract class Entity {
         return myMoveComponent;
     }
 
+    /**
+     * gibt dem Entity ein CollisionComponent, so dass der Spieler / andere
+     * bewegte Objekte wissen, dass sie durch dieses Objekt nicht hindurch gehen
+     * sollen
+     *
+     * @param c das CollisionComponent
+     */
     public void setCollisionComponent(CollisionComponent c) {
         myCollisionComponent = c;
     }

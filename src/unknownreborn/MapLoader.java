@@ -5,6 +5,9 @@
  */
 package unknownreborn;
 
+import Entity.Entity;
+import Entity.PlayerEntity;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -16,6 +19,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import util.DoublePoint;
 import util.ImageLoader;
 
 /**
@@ -41,8 +45,12 @@ public class MapLoader {
                 ArrayList<AnimatedBufferedImage> tiles = loadTileset(e);
                 tileList.addAll(tiles);
             }
+            Map map = new Map(rootElement, tileList);
             
-            return new Map(rootElement, tileList);
+            
+            map.addEntity(PlayerEntity.createNew());
+            
+            return map;
 
         } catch (JDOMException | IOException ex) {
             Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
