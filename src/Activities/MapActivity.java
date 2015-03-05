@@ -147,10 +147,12 @@ public class MapActivity extends GameActivity {
         for (Object o : pressedDirections.toArray()) {
             playerDirection += (int) o;
         }
-        if (pressedDirections.isEmpty()) {
+        if (pressedDirections.isEmpty() || pressedDirections.size() > 2 || 
+                (pressedDirections.contains(0) && pressedDirections.contains(4)) || 
+                (pressedDirections.contains(2) && pressedDirections.contains(6))) {
             playerDirection = 10;
         } else {
-            if (pressedDirections.contains(0) && pressedDirections.contains(6) && pressedDirections.size() == 2) {
+            if (pressedDirections.contains(0) && pressedDirections.contains(6)) {
                 playerDirection = 7;
             } else {
                 playerDirection = playerDirection / pressedDirections.size();
