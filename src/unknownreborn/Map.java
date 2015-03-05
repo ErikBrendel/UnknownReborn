@@ -25,6 +25,7 @@ public class Map {
     
     /**
      * gibt das AnimatedBufferedImage zurück, das an genau dieser Stelle sein soll.
+     * Die Ebenen heißen Boden, evtl Boden2, Wand und Vorne.
      * @param layerName der Name der Ebene
      * @param x x-Position
      * @param y y-Position
@@ -48,6 +49,10 @@ public class Map {
         return tileList.get(tileID);
     }
     
+    /**
+     * returns the map dimension in segments
+     * @return a Point representing the maps width and height
+     */
     public Point getDimensions() {
         Element aLayer = rootElement.getChild("layer");
         int width = Integer.valueOf(aLayer.getAttributeValue("width"));

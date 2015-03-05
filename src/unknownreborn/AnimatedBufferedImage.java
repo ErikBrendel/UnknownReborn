@@ -14,9 +14,7 @@ import util.ImageLoader;
 /**
  * Ein animiertes BufferedImage
  *
- *
- * DIE GETTICK METHODE MUSS NOCH GEFÜLLT WERDEN!!!!!!
- *
+ * Skalierung ist gleich mit implementiert
  *
  * @author Erik Brendel
  */
@@ -30,6 +28,12 @@ public class AnimatedBufferedImage {
     private Point oldDimension = new Point(0, 0);
     private boolean started = true; //ob die animation schon läuft
 
+    /**
+     * Returns a scaled BufferedImage for This Animation at this Moment
+     *
+     * @param dimension the Size of the Image
+     * @return the BufferedImage at this Moment
+     */
     public BufferedImage getBufferedImage(Point dimension) {
         if (dimension.x != oldDimension.x || dimension.y != oldDimension.y) { //rescale
             //System.out.println(oldDimension);
@@ -65,10 +69,16 @@ public class AnimatedBufferedImage {
 
         scaledImageList.clear();
         for (BufferedImage orig : imageList) {
-            scaledImageList.add(ImageLoader.getScaledImage(orig, oldDimension.x, oldDimension.y, ImageLoader.MODE_FAST));
+            scaledImageList.add(ImageLoader.getScaledImage(orig, oldDimension.x, oldDimension.y, ImageLoader.MODE_FAST/* bedeutet: keine Interpolation, schöne alte Pixel :) */));
         }
     }
 
+    /**
+     * creates a new Animation
+     *
+     * @param list A List of BufferedImages
+     * @param pauseMS the time in ms each frame is displayed
+     */
     public AnimatedBufferedImage(ArrayList<BufferedImage> list, int pauseMS) {
         this.pauseMS = pauseMS;
         for (BufferedImage img : list) {
@@ -76,11 +86,11 @@ public class AnimatedBufferedImage {
         }
     }
 
-    public AnimatedBufferedImage(BufferedImage img, int pauseMS) {
-        this.pauseMS = pauseMS;
-        imageList.add(convert(img));
-    }
-
+    /**
+     * Creates an pseudo-animation with only one non-moving image
+     *
+     * @param img the Image
+     */
     public AnimatedBufferedImage(BufferedImage img) {
         this.pauseMS = 100;
         imageList.add(convert(img));
@@ -98,16 +108,31 @@ public class AnimatedBufferedImage {
         return c;
     }
 
+    /**
+     * adds one Image at the end of this animation
+     *
+     * @param img the iage
+     */
     public void addImage(BufferedImage img) {
         imageList.add(img);
     }
 
+    /**
+     * starts the animation. If loopIt is false, the animation will stop and
+     * rest at the last frame (like a chest that stays open after the opening
+     * animation) if loopIt is true, the Animation will do an endless loop.
+     *
+     * @param loopIt decide if it is animated only once or in a loop
+     */
     public void restart(boolean loopIt) {
         started = true;
         loop = loopIt;
         startTick = getTick();
     }
 
+    /**
+     * Stops the animation, the first image of it is displayed
+     */
     public void stop() {
         startTick = Long.MIN_VALUE;
         started = false;
