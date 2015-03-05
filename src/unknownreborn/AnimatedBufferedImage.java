@@ -24,7 +24,7 @@ public class AnimatedBufferedImage {
     private final ArrayList<BufferedImage> scaledImageList = new ArrayList<>();
     private long startTick = Long.MIN_VALUE;
     private final int pauseMS;
-    private boolean loop = false;
+    private boolean loop = false; //ob die Animation auf Endlosschleife läuft
     private Point oldDimension = new Point(0, 0);
     private boolean started = true; //ob die animation schon läuft
 
@@ -149,11 +149,11 @@ public class AnimatedBufferedImage {
             new Thread() {
                 public void run() {
                     while (ticking) {
-                        tick++;
                         try {
                             Thread.sleep(1);
                         } catch (Exception ex) {
                         }
+                        tick++;
                     }
                 }
             }.start();
