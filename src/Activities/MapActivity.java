@@ -49,7 +49,8 @@ public class MapActivity extends GameActivity {
         Point endKachel = new Point((int) (startKoord.x + sizeKoord.x + 1), (int) (startKoord.y + sizeKoord.y + 1));
 
         //jetzt werden die Kacheln gemalt, zeilenweise
-        final String[] layers = {"Boden", "Boden2", "Wand", "Vorne"};
+        final String[] layers1 = {"Boden", "Boden2", "Wand", "Wand2"};
+        final String[] layers2 = {"Vorne", "Vorne2"};
 
         for (int y = startKachel.y; y <= endKachel.y; y++) {
             for (int x = startKachel.x; x <= endKachel.x; x++) {
@@ -59,21 +60,39 @@ public class MapActivity extends GameActivity {
                 int drawY = (int) Math.round(((double) (y) - startKoord.y) * pixelsForOneSegment);
 
                 //jede ebene an diese Stelle übereinander malen
-                for (String layerName : layers) {
+                for (String layerName : layers1) {
                     AnimatedBufferedImage aimg = activeMap.getImage(layerName, x, y);
-                    BufferedImage img = aimg.getBufferedImage(new Point((int)Math.round(pixelsForOneSegment) + 1, (int)Math.round(pixelsForOneSegment) + 1)); //plus 1, damit sich die bilder leicht überlappen.... sonst gibt es hässliche weiße linien
+                    BufferedImage img = aimg.getBufferedImage(new Point((int) Math.round(pixelsForOneSegment) + 1, (int) Math.round(pixelsForOneSegment) + 1)); //plus 1, damit sich die bilder leicht überlappen.... sonst gibt es hässliche weiße linien
                     g.drawImage(img, drawX, drawY, null);
                 }
 
             }
         }
         //roter punkt für den spieler
-        int drawX = (int) Math.round((playerLocation.x - startKoord.x) * pixelsForOneSegment);
-        int drawY = (int) Math.round((playerLocation.y - startKoord.y) * pixelsForOneSegment);
+        int playerX = (int) Math.round((playerLocation.x - startKoord.x) * pixelsForOneSegment);
+        int playerY = (int) Math.round((playerLocation.y - startKoord.y) * pixelsForOneSegment);
         g.setColor(Color.red);
-        g.fillOval(drawX - 5, drawY - 5, 10, 10);
+        g.fillOval(playerX - 10, playerY - 10, 20, 20);
 
         //entities malen.... noch keine ahnung wie :D
+        /*
+        
+         E N T I T I E S ! 
+        
+         */
+        //alle vorderen sachen malen, wie palmblätter usw
+        for (int y = startKachel.y; y <= endKachel.y; y++) {
+            for (int x = startKachel.x; x <= endKachel.x; x++) {
+                int drawX = (int) Math.round(((double) (x) - startKoord.x) * pixelsForOneSegment);
+                int drawY = (int) Math.round(((double) (y) - startKoord.y) * pixelsForOneSegment);
+
+                for (String layerName : layers2) {
+                    AnimatedBufferedImage aimg = activeMap.getImage(layerName, x, y);
+                    BufferedImage img = aimg.getBufferedImage(new Point((int) Math.round(pixelsForOneSegment) + 1, (int) Math.round(pixelsForOneSegment) + 1)); //plus 1, damit sich die bilder leicht überlappen.... sonst gibt es hässliche weiße linien
+                    g.drawImage(img, drawX, drawY, null);
+                }
+            }
+        }
     }
 
     @Override
