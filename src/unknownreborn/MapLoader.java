@@ -9,7 +9,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import util.ImageLoader;
 
 /**
@@ -20,7 +25,29 @@ public class MapLoader {
     
     public static Map loadMapFromResources(String blankFileName) {
         InputStream fileStream = Map.class.getClassLoader().getResourceAsStream("/maps/" + blankFileName + ".tmx");
-        return new Map(fileStream);
+        
+        try {
+            SAXBuilder builder = new SAXBuilder();
+            Document document = builder.build(fileStream);
+            Element rootElement = document.getRootElement();
+            
+            //tilesets laden
+            ArrayList<Element> tilesetElements = (ArrayList<Element>) rootElement.getChildren("tileset");
+            ArrayList<AnimatedBufferedImage> tileList = new ArrayList<>();
+            tileList.add(new AnimatedBufferedImage(new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB))); //the 0-segment (just transparency)
+            for (Element e : tilesetElements) {
+                ArrayList<AnimatedBufferedImage> tiles = loadTileset(e);
+                tileList.addAll(tiles);
+            }
+            
+            return new Map(rootElement, tileList);
+
+        } catch (JDOMException | IOException ex) {
+            Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        
+        
     }
     private static final int imagePixelSize = 32;
     

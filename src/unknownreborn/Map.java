@@ -5,17 +5,9 @@
  */
 package unknownreborn;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+import java.awt.Point;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
-import util.ImageLoader;
 
 /**
  *
@@ -23,29 +15,13 @@ import util.ImageLoader;
  */
 public class Map {
 
-
-    public Map(InputStream in) {
-        try {
-            SAXBuilder builder = new SAXBuilder();
-            Document document = builder.build(in);
-            rootElement = document.getRootElement();
-            
-            //tilesets laden
-            ArrayList<Element> tilesetElements = (ArrayList<Element>) rootElement.getChildren("tileset");
-            tileList = new ArrayList<>();
-            tileList.add(new AnimatedBufferedImage(new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB))); //the 0-segment (just transparency)
-            for (Element e : tilesetElements) {
-                ArrayList<AnimatedBufferedImage> tiles = MapLoader.loadTileset(e);
-                tileList.addAll(tiles);
-            }
-            
-
-        } catch (JDOMException | IOException ex) {
-            Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public Map(Element rootElement, ArrayList<AnimatedBufferedImage> tileList) {
+        this.rootElement = rootElement;
+        this.tileList = tileList;
     }
-    private Element rootElement;
-    private ArrayList<AnimatedBufferedImage> tileList;
+
+    private final Element rootElement;
+    private final ArrayList<AnimatedBufferedImage> tileList;
     
     /**
      * gibt das AnimatedBufferedImage zurück, das an genau dieser Stelle sein soll.
@@ -70,6 +46,13 @@ public class Map {
         int index = (y * layerWidth) + x;
         int tileID = Integer.valueOf(thisLayer.getChild("data").getChildren().get(index).getTextTrim());
         return tileList.get(tileID);
+    }
+    
+    public Point getDimensions() {
+        Element aLayer = rootElement.getChild("layer");
+        int width = Integer.valueOf(aLayer.getAttributeValue("width"));
+        int height = Integer.valueOf(aLayer.getAttributeValue("height"));
+        return new Point(width, height);
     }
     
 }
