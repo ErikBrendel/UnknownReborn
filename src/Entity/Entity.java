@@ -16,7 +16,7 @@ import util.ImageLoader;
  */
 public abstract class Entity {
 
-    private DoublePoint location;
+    private DoublePoint location = null;
     private MoveComponent myMoveComponent = null;
     private CollisionComponent myCollisionComponent = null;
 

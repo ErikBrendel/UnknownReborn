@@ -24,13 +24,7 @@ public class PlayerEntity extends Entity {
     }
     
     public PlayerEntity() {
-        setMoveComponent(new MoveComponent() {
-
-            @Override
-            public void onTick() {
-                
-            }
-        });
+        setLocation(new DoublePoint(9, 9));
     }
 
     @Override

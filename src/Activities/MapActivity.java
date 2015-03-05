@@ -73,11 +73,6 @@ public class MapActivity extends GameActivity {
 
             }
         }
-        //roter punkt für den spieler
-        int playerX = (int) Math.round((getFocusLocation().x - startKoord.x) * pixelsForOneSegment);
-        int playerY = (int) Math.round((getFocusLocation().y - startKoord.y) * pixelsForOneSegment);
-        g.setColor(Color.blue);
-        g.fillOval(playerX - 10, playerY - 10, 20, 20); /* */
 
         //entities malen.... noch keine ahnung wie :D
         /*
@@ -90,7 +85,7 @@ public class MapActivity extends GameActivity {
                 BufferedImage entityImg = entity.getScaledImage(pixelsForOneSegment);
                 
                 int entityX = (int) Math.round((entity.getLocation().x - startKoord.x - (entity.getDimensions().x/2d)) * pixelsForOneSegment);
-                int entityY = (int) Math.round((entity.getLocation().y - startKoord.y - (entity.getDimensions().x/2d)) * pixelsForOneSegment);
+                int entityY = (int) Math.round((entity.getLocation().y - startKoord.y - (entity.getDimensions().y/2d)) * pixelsForOneSegment);
                 
                 g.drawImage(entityImg, entityX, entityY, null);
             }
