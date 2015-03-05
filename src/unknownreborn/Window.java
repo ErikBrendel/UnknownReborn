@@ -15,6 +15,7 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.HashSet;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -67,13 +68,19 @@ public class Window extends JFrame {
             g.drawString("FPS: " + Long.toString(fps), 20, 10);
         }
 
+        HashSet<Integer> pressedKeys = new HashSet<>();
+
         @Override
         public void keyPressed(KeyEvent e) {
-            manager.keyPressed(e);
+            if (!pressedKeys.contains(e.getKeyCode())) {
+                pressedKeys.add(e.getKeyCode());
+                manager.keyPressed(e);
+            }
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
+            pressedKeys.remove(e.getKeyCode());
             manager.keyReleased(e);
         }
 

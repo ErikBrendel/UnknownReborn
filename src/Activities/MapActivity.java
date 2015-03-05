@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashSet;
 import unknownreborn.AnimatedBufferedImage;
 import unknownreborn.Map;
 import util.DoublePoint;
@@ -21,6 +22,7 @@ public class MapActivity extends GameActivity {
 
     private Map activeMap;
     private DoublePoint playerLocation;
+    private int playerDirection = 10;
     private double mapSightRange = 16f; //wie breit das Sichtfenster ist (in mapSegmenten)
 
     @Override
@@ -99,19 +101,19 @@ public class MapActivity extends GameActivity {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
             case KeyEvent.VK_UP:
-                playerLocation.y -= 0.5f;
-                break;
-            case KeyEvent.VK_S:
-            case KeyEvent.VK_DOWN:
-                playerLocation.y += 0.5f;
+                move(0, true);
                 break;
             case KeyEvent.VK_D:
             case KeyEvent.VK_RIGHT:
-                playerLocation.x += 0.5f;
+                move(2, true);
+                break;
+            case KeyEvent.VK_S:
+            case KeyEvent.VK_DOWN:
+                move(4, true);
                 break;
             case KeyEvent.VK_A:
             case KeyEvent.VK_LEFT:
-                playerLocation.x -= 0.5f;
+                move(6, true);
                 break;
             case KeyEvent.VK_PLUS:
                 mapSightRange /= 1.1f;
@@ -123,8 +125,109 @@ public class MapActivity extends GameActivity {
         return true;
     }
 
+    private static final double moveSizePerTick = 0.005d;
+    private static final double moveSizePerTickLittle = Math.sqrt((moveSizePerTick * moveSizePerTick) / 2);
+
+    /**
+     * ändert die Bewegung des Spielers
+     *
+     * @param newDirection 0 ist up, 2 ist rechst, 4 ist unten und 6 ist
+     * links,.... die werte dazwischen sind für allgemeine drehungen für
+     * objekte.... ich wollte halt die richtungsangaben programmweit einheitlich
+     * lassen
+     * @param startNotStop start heißt loslaufen, wenn false dannn anhalten
+     */
+    public void move(int newDirection, boolean startNotStop) {
+        if (startNotStop) {
+            pressedDirections.add(newDirection);
+        } else {
+            pressedDirections.remove(newDirection);
+        }
+        playerDirection = 0;
+        for (Object o : pressedDirections.toArray()) {
+            playerDirection += (int) o;
+        }
+        if (pressedDirections.isEmpty()) {
+            playerDirection = 10;
+        } else {
+            if (pressedDirections.contains(0) && pressedDirections.contains(6) && pressedDirections.size() == 2) {
+                playerDirection = 7;
+            } else {
+                playerDirection = playerDirection / pressedDirections.size();
+            }
+        }
+
+        if (!moveThreadRunning && startNotStop) {
+            moveThreadRunning = true;
+            //start moving thread
+            new Thread() {
+                public void run() {
+                    do {
+
+                        switch (playerDirection) {
+                            case 0:
+                                playerLocation.y -= moveSizePerTick;
+                                break;
+                            case 1:
+                                playerLocation.y -= moveSizePerTickLittle;
+                                playerLocation.x += moveSizePerTickLittle;
+                                break;
+                            case 2:
+                                playerLocation.x += moveSizePerTick;
+                                break;
+                            case 3:
+                                playerLocation.y += moveSizePerTickLittle;
+                                playerLocation.x += moveSizePerTickLittle;
+                                break;
+                            case 4:
+                                playerLocation.y += moveSizePerTick;
+                                break;
+                            case 5:
+                                playerLocation.y += moveSizePerTickLittle;
+                                playerLocation.x -= moveSizePerTickLittle;
+                                break;
+                            case 6:
+                                playerLocation.x -= moveSizePerTick;
+                                break;
+                            case 7:
+                                playerLocation.y -= moveSizePerTickLittle;
+                                playerLocation.x -= moveSizePerTickLittle;
+                                break;
+                        }
+
+                        try {
+                            Thread.sleep(1);
+                        } catch (Exception ex) {
+
+                        }
+                    } while (moveThreadRunning);
+                }
+            }.start();
+        }
+    }
+    private boolean moveThreadRunning = false;
+    private HashSet<Integer> pressedDirections = new HashSet<>();
+
     @Override
     public boolean onKeyReleased(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_W:
+            case KeyEvent.VK_UP:
+                move(0, false);
+                break;
+            case KeyEvent.VK_D:
+            case KeyEvent.VK_RIGHT:
+                move(2, false);
+                break;
+            case KeyEvent.VK_S:
+            case KeyEvent.VK_DOWN:
+                move(4, false);
+                break;
+            case KeyEvent.VK_A:
+            case KeyEvent.VK_LEFT:
+                move(6, false);
+                break;
+        }
         return true;
     }
 
