@@ -7,6 +7,7 @@ package unknownreborn;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 import org.jdom2.Element;
 
 /**
@@ -32,7 +33,7 @@ public class Map {
      * @return
      */
     public AnimatedBufferedImage getImage(String layerName, int x, int y) {
-        ArrayList<Element> layers = (ArrayList<Element>) rootElement.getChildren("layer");
+        List<Element> layers = rootElement.getChildren("layer");
         Element thisLayer = null;
         for (Element e: layers) {
             if(e.getAttributeValue("name").equals(layerName)) {
@@ -44,8 +45,9 @@ public class Map {
             return null;
         }
         int layerWidth = Integer.valueOf(thisLayer.getAttributeValue("width"));
+        System.out.println("layerWidth = " + layerWidth);
         int index = (y * layerWidth) + x;
-        int tileID = Integer.valueOf(thisLayer.getChild("data").getChildren().get(index).getTextTrim());
+        int tileID = Integer.valueOf(thisLayer.getChild("data").getChildren().get(index).getAttributeValue("gid"));
         return tileList.get(tileID);
     }
     

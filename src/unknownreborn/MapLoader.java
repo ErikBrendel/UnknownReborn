@@ -7,8 +7,9 @@ package unknownreborn;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdom2.Document;
@@ -24,15 +25,16 @@ import util.ImageLoader;
 public class MapLoader {
     
     public static Map loadMapFromResources(String blankFileName) {
-        InputStream fileStream = Map.class.getClassLoader().getResourceAsStream("/maps/" + blankFileName + ".tmx");
+        URL url = MapLoader.class.getResource("/resources/maps/" + blankFileName + ".tmx");
+        System.out.println("url = " + url);
         
         try {
             SAXBuilder builder = new SAXBuilder();
-            Document document = builder.build(fileStream);
+            Document document = builder.build(url);
             Element rootElement = document.getRootElement();
             
             //tilesets laden
-            ArrayList<Element> tilesetElements = (ArrayList<Element>) rootElement.getChildren("tileset");
+            List<Element> tilesetElements = rootElement.getChildren("tileset");
             ArrayList<AnimatedBufferedImage> tileList = new ArrayList<>();
             tileList.add(new AnimatedBufferedImage(new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB))); //the 0-segment (just transparency)
             for (Element e : tilesetElements) {
@@ -72,7 +74,7 @@ public class MapLoader {
             if (name == null ||name.equals("")) {
                 throw new IOException("Kein Name vergeben.");
             }
-            BufferedImage fullTileSet = ImageLoader.get().image("/gui/tilesets/" + name);
+            BufferedImage fullTileSet = ImageLoader.get().image("/resources/images/tilesets/" + name);
             int imgWidth = fullTileSet.getWidth()/imagePixelSize; //in segments
             int imgHeight = fullTileSet.getHeight()/imagePixelSize;
             

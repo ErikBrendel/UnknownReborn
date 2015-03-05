@@ -5,7 +5,6 @@
  */
 package Activities;
 
-import Activities.GameActivity;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -86,7 +85,7 @@ public class ActivityManager {
      */
     public void clearActivityStack() {
         while(removeUpperActivity()) {
-            
+            //ja das muss leer sein :)
         }
     }
 
