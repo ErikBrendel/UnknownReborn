@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import unknownreborn.MapLoader;
-import util.FloatPoint;
+import util.DoublePoint;
 import util.ImageLoader;
 import util.MP3Player;
 
@@ -95,7 +95,7 @@ public class MainMenueActivity extends GameActivity {
             case 0:
                 ArrayList<Object> ol = new ArrayList<>();
                 ol.add(MapLoader.loadMapFromResources("test"));
-                ol.add(new FloatPoint(10, 10));
+                ol.add(new DoublePoint(10, 10));
                 manager.clearActivityStack();
                 manager.showActivity("mapActivity", ol);
                 break;

@@ -1,5 +1,6 @@
 package Activities;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import unknownreborn.AnimatedBufferedImage;
 import unknownreborn.Map;
-import util.FloatPoint;
+import util.DoublePoint;
 
 /**
  *
@@ -20,14 +21,14 @@ public class MapActivity extends GameActivity {
     }
 
     private Map activeMap;
-    private FloatPoint playerLocation;
-    private float mapSightRange = 16f; //wie breit das Sichtfenster ist (in mapSegmenten)
+    private DoublePoint playerLocation;
+    private double mapSightRange = 16f; //wie breit das Sichtfenster ist (in mapSegmenten)
 
     @Override
     public void render(Graphics2D g, int width, int height) {
-        int pixelsForOneSegment = Math.round((float) (width) / mapSightRange);
-        FloatPoint sizeKoord = new FloatPoint(mapSightRange, mapSightRange / (float) (width) * (float) (height)); //Die Größe des Bildschirms in Kachelkoordinaten
-        FloatPoint startKoord = new FloatPoint(playerLocation.x - (sizeKoord.x / 2f), playerLocation.y - (sizeKoord.y / 2f)); //ecke oben links des Bildschirms, in Kachelkoordinaten umgerechnet
+        int pixelsForOneSegment = (int)Math.round((double) (width) / mapSightRange);
+        DoublePoint sizeKoord = new DoublePoint(mapSightRange, mapSightRange / (double) (width) * (double) (height)); //Die Größe des Bildschirms in Kachelkoordinaten
+        DoublePoint startKoord = new DoublePoint(playerLocation.x - (sizeKoord.x / 2f), playerLocation.y - (sizeKoord.y / 2f)); //ecke oben links des Bildschirms, in Kachelkoordinaten umgerechnet
 
         //wir wollen ja keinen schwarzen bildschirm zeigen... wenn wir an der ecke sind, "hält diese den Bildschirm vom weiterscrollen ab"
         if (startKoord.x < 0) {
@@ -54,8 +55,8 @@ public class MapActivity extends GameActivity {
             for (int x = startKachel.x; x <= endKachel.x; x++) {
 
                 //zuerst die koordinaten des Malpunktes bestimmen (in px)
-                int drawX = Math.round(((float) (x) - startKoord.x) * (float) (pixelsForOneSegment));
-                int drawY = Math.round(((float) (y) - startKoord.y) * (float) (pixelsForOneSegment));
+                int drawX = (int) Math.round(((double) (x) - startKoord.x) * (double) (pixelsForOneSegment));
+                int drawY = (int) Math.round(((double) (y) - startKoord.y) * (double) (pixelsForOneSegment));
 
                 //jede ebene an diese Stelle übereinander malen
                 for (String layerName : layers) {
@@ -66,6 +67,11 @@ public class MapActivity extends GameActivity {
 
             }
         }
+        //roter punkt für den spieler
+        int drawX = (int) Math.round((playerLocation.x - startKoord.x) * (double) (pixelsForOneSegment));
+        int drawY = (int) Math.round((playerLocation.y - startKoord.y) * (double) (pixelsForOneSegment));
+        g.setColor(Color.red);
+        g.fillOval(drawX - 5, drawY - 5, 10, 10);
 
         //entities malen.... noch keine ahnung wie :D
     }
@@ -119,7 +125,7 @@ public class MapActivity extends GameActivity {
         try {
             ArrayList<Object> ps = (ArrayList<Object>) p;
             activeMap = (Map) ps.get(0);
-            playerLocation = (FloatPoint) ps.get(1);
+            playerLocation = (DoublePoint) ps.get(1);
         } catch (Exception ex) {
             System.out.println("Wrong parameters for the MapActivity!");
             ex.printStackTrace();

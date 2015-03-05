@@ -11,14 +11,14 @@ import java.awt.Point;
  *
  * @author Erik Brendel
  */
-public class FloatPoint {
-    public float x;
-    public float y;
-    public FloatPoint(float x, float y) {
+public class DoublePoint {
+    public double x;
+    public double y;
+    public DoublePoint(double x, double y) {
         this.x = x;
         this.y = y;
     }
-    public FloatPoint(Point p) {
+    public DoublePoint(Point p) {
         x = p.x;
         y = p.y;
     }
