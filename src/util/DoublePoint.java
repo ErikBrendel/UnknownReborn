@@ -22,4 +22,8 @@ public class DoublePoint {
         x = p.x;
         y = p.y;
     }
+    public DoublePoint(DoublePoint p) {
+        x = p.x;
+        y = p.y;
+    }
 }

@@ -95,7 +95,7 @@ public class MainMenueActivity extends GameActivity {
             case 0:
                 ArrayList<Object> ol = new ArrayList<>();
                 ol.add(MapLoader.loadMapFromResources("test"));
-                ol.add(new DoublePoint(10, 10));
+                ol.add(new DoublePoint(9, 9));
                 manager.clearActivityStack();
                 manager.showActivity("mapActivity", ol);
                 break;

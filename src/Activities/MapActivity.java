@@ -165,7 +165,7 @@ public class MapActivity extends GameActivity {
             new Thread() {
                 public void run() {
                     do {
-
+                        DoublePoint oldPlayerLocation = new DoublePoint(playerLocation);
                         switch (playerDirection) {
                             case 0:
                                 playerLocation.y -= moveSizePerTick;
@@ -196,6 +196,10 @@ public class MapActivity extends GameActivity {
                                 playerLocation.x -= moveSizePerTickLittle;
                                 break;
                         }
+                        
+                        if(!activeMap.isWalkable(playerLocation, null)) {
+                            playerLocation = oldPlayerLocation;
+                        }
 
                         try {
                             Thread.sleep(1);
@@ -209,6 +213,9 @@ public class MapActivity extends GameActivity {
     }
     private boolean moveThreadRunning = false;
     private HashSet<Integer> pressedDirections = new HashSet<>();
+    
+    
+    
 
     @Override
     public boolean onKeyReleased(KeyEvent e) {
