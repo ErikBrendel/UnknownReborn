@@ -7,6 +7,7 @@ package unknownreborn;
 
 import Entity.CollisionComponent;
 import Entity.Entity;
+import Entity.PlayerEntity;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -75,9 +76,45 @@ public class Map {
     public ArrayList<Entity> getAllEntities() {
         return entityList;
     }
-    
+
+    /**
+     * sortiert alle entities nach ihren y-Koordinaten, so dass diejenigen, die
+     * weiter hinten stehen, auch eher gerendert werden
+     *
+     * @return die sortierte Liste
+     */
+    public ArrayList<Entity> getAllEntitiesSorted() {
+        ArrayList<Entity> raw = getAllEntities();
+        for (int i = 0; i < raw.size() - 1; i++) {
+            for (int j = i; j < raw.size(); j++) {
+                if(raw.get(i).getLocation().y > raw.get(j).getLocation().y) {
+                    Entity swap = raw.get(i);
+                    raw.set(i, raw.get(j));
+                    raw.set(j, swap);
+                }
+            }
+        }
+        
+        return raw;
+    }
+
+    /**
+     * gibt das erste PlayerEntity-Objekt aus der entity-liste zurück
+     *
+     * @return der Player auf dieser Map
+     */
+    public PlayerEntity getPlayerEntity() {
+        for (Entity e : getAllEntities()) {
+            if (e instanceof PlayerEntity) {
+                return (PlayerEntity) e;
+            }
+        }
+        return null;
+    }
+
     /**
      * Fügt der Map ein neues Entity hinzu
+     *
      * @param e das neue entity
      */
     public void addEntity(Entity e) {
@@ -114,11 +151,11 @@ public class Map {
 
         ArrayList<Entity> entities = getAllEntities();
         for (Entity e : entities) {
-            if (except != null && !except.contains(e)) {
+            if (except == null || !except.contains(e)) {
                 CollisionComponent cc = e.getCollisionComponent();
                 if (cc != null) {
-                    DoublePoint start = new DoublePoint(e.getLocation().x - (cc.getCollisionBoxDimensions().x / 2d), e.getLocation().y - (cc.getCollisionBoxDimensions().y / 2d));
-                    DoublePoint end = new DoublePoint(e.getLocation().x + (cc.getCollisionBoxDimensions().x / 2d), e.getLocation().y + (cc.getCollisionBoxDimensions().y / 2d));
+                    DoublePoint start = new DoublePoint(e.getLocation().x + cc.getCollisionBoxStart().x, e.getLocation().y + cc.getCollisionBoxStart().y);
+                    DoublePoint end = new DoublePoint(e.getLocation().x + cc.getCollisionBoxEnd().x, e.getLocation().y + cc.getCollisionBoxEnd().y);
                     if (aPoint.x >= start.x && aPoint.x <= end.x) {
                         if (aPoint.y >= start.y && aPoint.y <= end.y) {
                             return false;

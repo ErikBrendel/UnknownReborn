@@ -8,6 +8,7 @@ package Entity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashSet;
 import unknownreborn.Map;
 import util.DoublePoint;
@@ -20,6 +21,19 @@ public class PlayerEntity extends Entity {
 
     public static PlayerEntity createNew() {
         PlayerEntity pe = new PlayerEntity();
+        pe.setCollisionComponent(new CollisionComponent() {
+
+            @Override
+            public DoublePoint getCollisionBoxStart() {
+                return new DoublePoint(-0.5, -0.5);
+            }
+
+            @Override
+            public DoublePoint getCollisionBoxEnd() {
+                return new DoublePoint(0.5, 0.5);
+            }
+
+        });
         return pe;
     }
     
@@ -60,6 +74,8 @@ public class PlayerEntity extends Entity {
      * @param activeMap t check the map for obstacles
      */
     public void move(int newDirection, boolean startNotStop, final Map activeMap) {
+        final PlayerEntity me = this;
+        
         if (startNotStop) {
             pressedDirections.add(newDirection);
         } else {
@@ -119,7 +135,9 @@ public class PlayerEntity extends Entity {
                                 break;
                         }
                         
-                        if(!activeMap.isWalkable(getLocation(), null)) {
+                        ArrayList<Entity> exceptList = new ArrayList<>();
+                        exceptList.add(me);
+                        if(!activeMap.isWalkable(getLocation(), exceptList)) {
                             setLocation(oldPlayerLocation);
                         }
 

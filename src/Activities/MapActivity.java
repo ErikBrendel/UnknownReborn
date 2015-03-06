@@ -18,16 +18,26 @@ import util.DoublePoint;
  */
 public class MapActivity extends GameActivity {
 
+    private static final String[] layers1 = {"Boden", "Boden2", "Wand", "Wand2"};
+    private static final String[] layers2 = {"Vorne", "Vorne2"};
+
+    private Map activeMap;
+    
+    private PlayerEntity playerEntity;
+    private double mapSightRange = 16f; //wie breit das Sichtfenster ist (in mapSegmenten)
+    
     public MapActivity(ActivityManager manager) {
         super(manager);
     }
 
-    private Map activeMap;
+
+    /**
+     * change this method when the camera should focus smth else
+     * @return the center of the camera
+     */
     public DoublePoint getFocusLocation() {
         return playerEntity.getLocation();
     }
-    private PlayerEntity playerEntity;
-    private double mapSightRange = 16f; //wie breit das Sichtfenster ist (in mapSegmenten)
 
     @Override
     public void render(Graphics2D g, int width, int height) {
@@ -54,9 +64,6 @@ public class MapActivity extends GameActivity {
         Point endKachel = new Point((int) (startKoord.x + sizeKoord.x + 1), (int) (startKoord.y + sizeKoord.y + 1));
 
         //jetzt werden die Kacheln gemalt, zeilenweise
-        final String[] layers1 = {"Boden", "Boden2", "Wand", "Wand2"};
-        final String[] layers2 = {"Vorne", "Vorne2"};
-
         for (int y = startKachel.y; y <= endKachel.y; y++) {
             for (int x = startKachel.x; x <= endKachel.x; x++) {
 
@@ -74,25 +81,27 @@ public class MapActivity extends GameActivity {
             }
         }
 
-        //entities malen.... noch keine ahnung wie :D
         /*
         
          E N T I T I E S ! 
         
          */
-        for (Entity entity: activeMap.getAllEntities()) {
-            if(true/* wenn es gemalt werden muss */) {
+        for (Entity entity : activeMap.getAllEntitiesSorted()) {
+            if (true/* wenn es gemalt werden muss */) {
                 BufferedImage entityImg = entity.getScaledImage(pixelsForOneSegment);
-                
-                int entityX = (int) Math.round((entity.getLocation().x - startKoord.x - (entity.getDimensions().x/2d)) * pixelsForOneSegment);
-                int entityY = (int) Math.round((entity.getLocation().y - startKoord.y - (entity.getDimensions().y/2d)) * pixelsForOneSegment);
-                
+
+                int entityX = (int) Math.round((entity.getLocation().x - startKoord.x - (entity.getDimensions().x / 2d)) * pixelsForOneSegment);
+                int entityY = (int) Math.round((entity.getLocation().y - startKoord.y - (entity.getDimensions().y / 2d)) * pixelsForOneSegment);
+
                 g.drawImage(entityImg, entityX, entityY, null);
             }
         }
+
+        /*
         
+         VORDERE KACHELEBENE
         
-        //alle vorderen sachen malen, wie palmblätter usw
+         */
         for (int y = startKachel.y; y <= endKachel.y; y++) {
             for (int x = startKachel.x; x <= endKachel.x; x++) {
                 int drawX = (int) Math.round(((double) (x) - startKoord.x) * pixelsForOneSegment);
@@ -136,7 +145,6 @@ public class MapActivity extends GameActivity {
         return true;
     }
 
-
     @Override
     public boolean onKeyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
@@ -165,22 +173,15 @@ public class MapActivity extends GameActivity {
     }
 
     /**
-     * als Parameter bitte eine ArrayList\<Object\> mit der Map als erstem
-     * element und einem FloatPoint für die startPosition des Spielers
+     * als Parameter bitte eine Map
      *
      * @param p the object-List
      */
     @Override
     public void onEnter(Object p) {
         try {
-            ArrayList<Object> ps = (ArrayList<Object>) p;
-            activeMap = (Map) ps.get(0);
-            for(Entity e: activeMap.getAllEntities()) {
-                if (e instanceof PlayerEntity) {
-                    playerEntity = (PlayerEntity) e;
-                    System.out.println("playerEntity = " + playerEntity);
-                }
-            }
+            activeMap = (Map) p;
+            playerEntity = activeMap.getPlayerEntity();
         } catch (Exception ex) {
             System.out.println("Wrong parameters for the MapActivity!");
             ex.printStackTrace();

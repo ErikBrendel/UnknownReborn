@@ -5,14 +5,17 @@
  */
 package Activities;
 
+import Entity.Entity;
+import Entity.MoveComponent;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashMap;
+import unknownreborn.Map;
 import unknownreborn.MapLoader;
 import util.DoublePoint;
 import util.ImageLoader;
@@ -58,7 +61,6 @@ public class MainMenueActivity extends GameActivity {
         }
     }
 
-
     int selectedButton = 0;
     final int maxSelectedButton = 2;
 
@@ -93,11 +95,41 @@ public class MainMenueActivity extends GameActivity {
     private void launchButtonEvent(int buttonID) {
         switch (buttonID) {
             case 0:
-                ArrayList<Object> ol = new ArrayList<>();
-                ol.add(MapLoader.loadMapFromResources("test"));
-                ol.add(new DoublePoint(9, 9));
+                final Map m = MapLoader.loadMapFromResources("test");
+                Entity follower = new Entity() {
+                    @Override
+                    public BufferedImage getImage() {
+                        BufferedImage img = new BufferedImage(32, 64, BufferedImage.TYPE_INT_ARGB);
+                        Graphics2D g = img.createGraphics();
+                        g.setColor(Color.BLUE);
+                        g.fillOval(10, 20, 12, 12);
+                        g.setColor(Color.BLACK);
+                        g.fillRect(15, 2, 2, 30);
+
+                        return img;
+                    }
+
+                    @Override
+                    public DoublePoint getDimensions() {
+                        return new DoublePoint(1, 2);
+                    }
+                };
+                follower.setMoveComponent(new MoveComponent() {
+                    public void onTick() {
+                        DoublePoint old = getLocation();
+                        DoublePoint playerLoc = m.getPlayerEntity().getLocation();
+                        DoublePoint newLoc = new DoublePoint(old.x * 0.999 + playerLoc.x * 0.001, old.y * 0.999 + playerLoc.y * 0.001);
+                        if (m.isWalkable(newLoc, null)) {
+                            setLocation(newLoc);
+                        }
+                    }
+                });
+                follower.setLocation(new DoublePoint(1, 6));
+                
+                m.addEntity(follower);
+
                 manager.clearActivityStack();
-                manager.showActivity("mapActivity", ol);
+                manager.showActivity("mapActivity", m);
                 break;
             case maxSelectedButton:
                 manager.showActivity("confirmExitWindow", "Do you really want to exit?");
