@@ -10,7 +10,7 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 
 public class MP3Player {
 
-    public static final boolean AUDIO_ENABLED = false;
+    public static final boolean AUDIO_ENABLED = true;
 
     /**
      * alle aktiven Player (also eigentlich alle, die komplette players-liste)

@@ -148,6 +148,9 @@ public class Map {
         if (getSegmentID("Wand2", (int) aPoint.x, (int) aPoint.y) != 0) {
             return false;
         }
+        if(aPoint.x < 0 || aPoint.y < 0 || aPoint.x > getDimensions().x || aPoint.y > getDimensions().y) {
+            return false;
+        }
 
         ArrayList<Entity> entities = getAllEntities();
         for (Entity e : entities) {
