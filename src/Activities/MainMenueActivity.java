@@ -95,7 +95,7 @@ public class MainMenueActivity extends GameActivity {
     private void launchButtonEvent(int buttonID) {
         switch (buttonID) {
             case 0:
-                final Map m = MapLoader.loadMapFromResources("test");
+                final Map m = MapLoader.loadMapFromResources("test2");
                 Entity follower = new Entity() {
                     @Override
                     public BufferedImage getImage() {
@@ -125,7 +125,7 @@ public class MainMenueActivity extends GameActivity {
                     }
                 });
                 follower.setLocation(new DoublePoint(1, 6));
-                
+
                 m.addEntity(follower);
 
                 manager.clearActivityStack();
@@ -151,7 +151,7 @@ public class MainMenueActivity extends GameActivity {
         //background = new MP3Player("/resources/sound/menueBG.mp3", 0.5f, 1f);
         //background.play(true);
         MP3Player.addSource("menueBG", "menueBG.ogg", true);
-        MP3Player.setVolume("menueBG", 20);
+        MP3Player.setVolume("menueBG", 100);
         MP3Player.play("menueBG");
 
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
