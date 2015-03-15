@@ -29,6 +29,7 @@ public class Map {
     private final Element rootElement;
     private final ArrayList<AnimatedBufferedImage> tileList;
     private final ArrayList<Entity> entityList = new ArrayList<>();
+    private final ArrayList<HitBox> hitBoxList = new ArrayList<>();
 
     /**
      * gibt das AnimatedBufferedImage zurück, das an genau dieser Stelle sein
@@ -87,14 +88,14 @@ public class Map {
         ArrayList<Entity> raw = getAllEntities();
         for (int i = 0; i < raw.size() - 1; i++) {
             for (int j = i; j < raw.size(); j++) {
-                if(raw.get(i).getLocation().y > raw.get(j).getLocation().y) {
+                if (raw.get(i).getLocation().y > raw.get(j).getLocation().y) {
                     Entity swap = raw.get(i);
                     raw.set(i, raw.get(j));
                     raw.set(j, swap);
                 }
             }
         }
-        
+
         return raw;
     }
 
@@ -119,6 +120,10 @@ public class Map {
      */
     public void addEntity(Entity e) {
         entityList.add(e);
+    }
+
+    public void addHitBox(HitBox hb) {
+        hitBoxList.add(hb);
     }
 
     /**
@@ -148,10 +153,21 @@ public class Map {
         if (getSegmentID("Wand2", (int) aPoint.x, (int) aPoint.y) != 0) {
             return false;
         }
-        if(aPoint.x < 0 || aPoint.y < 0 || aPoint.x > getDimensions().x || aPoint.y > getDimensions().y) {
+        //map borders
+        if (aPoint.x < 0 || aPoint.y < 0 || aPoint.x > getDimensions().x || aPoint.y > getDimensions().y) {
             return false;
         }
 
+        //all the map-set hitboxes
+        for (HitBox hb : hitBoxList) {
+            if (aPoint.x >= hb.p1.x && aPoint.x <= hb.p2.x) {
+                if (aPoint.y >= hb.p1.y && aPoint.y <= hb.p2.y) {
+                    return false;
+                }
+            }
+        }
+
+        //all entities with collisionboxes
         ArrayList<Entity> entities = getAllEntities();
         for (Entity e : entities) {
             if (except == null || !except.contains(e)) {
@@ -169,5 +185,16 @@ public class Map {
         }
 
         return true;
+    }
+
+    public static class HitBox {
+
+        public DoublePoint p1;
+        public DoublePoint p2;
+
+        public HitBox(float x, float y, float width, float height) {
+            p1 = new DoublePoint(x, y);
+            p2 = new DoublePoint(x + width, y + height);
+        }
     }
 }

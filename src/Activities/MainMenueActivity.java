@@ -124,7 +124,7 @@ public class MainMenueActivity extends GameActivity {
                         }
                     }
                 });
-                follower.setLocation(new DoublePoint(1, 6));
+                follower.setLocation(new DoublePoint(19,27));
 
                 m.addEntity(follower);
 

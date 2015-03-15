@@ -27,16 +27,16 @@ import util.ImageLoader;
  * @author Erik Brendel
  */
 public class MapLoader {
-    
+
     public static Map loadMapFromResources(String blankFileName) {
         URL url = MapLoader.class.getResource("/resources/maps/" + blankFileName + ".tmx");
         System.out.println("url = " + url);
-        
+
         try {
             SAXBuilder builder = new SAXBuilder();
             Document document = builder.build(url);
             Element rootElement = document.getRootElement();
-            
+
             //tilesets laden
             List<Element> tilesetElements = rootElement.getChildren("tileset");
             ArrayList<AnimatedBufferedImage> tileList = new ArrayList<>();
@@ -46,30 +46,31 @@ public class MapLoader {
                 tileList.addAll(tiles);
             }
             Map map = new Map(rootElement, tileList);
-            
-            
+
+            //hitboxen laden
+            for (Map.HitBox hb : loadHitBoxes(rootElement.getChild("objectgroup"))) {
+                map.addHitBox(hb);
+            }
+
             map.addEntity(PlayerEntity.createNew());
-            
+
             return map;
 
         } catch (JDOMException | IOException ex) {
             Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-        
-        
+
     }
     private static final int imagePixelSize = 32;
-    
-    
 
     /**
      * Lädt die einzelnen Bilder eines Tilesets
-     * 
-     * 
+     *
+     *
      * ANIMATIONEN FEHLEN NOCH!
-     * 
-     * 
+     *
+     *
      * @param tileSetNode das Element-Objekt des Tilesets
      * @return eine Liste aller Segment-Bilder des Tilesets
      */
@@ -79,13 +80,13 @@ public class MapLoader {
             String[] splitFileName = tileSetNode.getChild("image").getAttributeValue("source").split("/");
             String name = splitFileName[splitFileName.length - 1];
             System.out.println("name = " + name);
-            if (name == null ||name.equals("")) {
+            if (name == null || name.equals("")) {
                 throw new IOException("Kein Name vergeben.");
             }
             BufferedImage fullTileSet = ImageLoader.get().image("/resources/images/tilesets/" + name);
-            int imgWidth = fullTileSet.getWidth()/imagePixelSize; //in segments
-            int imgHeight = fullTileSet.getHeight()/imagePixelSize;
-            
+            int imgWidth = fullTileSet.getWidth() / imagePixelSize; //in segments
+            int imgHeight = fullTileSet.getHeight() / imagePixelSize;
+
             ArrayList<AnimatedBufferedImage> list = new ArrayList<>();
             for (int row = 0; row < imgHeight; row++) {
                 for (int x = 0; x < imgWidth; x++) {
@@ -94,14 +95,40 @@ public class MapLoader {
                     list.add(animation);
                 }
             }
-            
-            
-            
+
             return list;
         } catch (Exception ex) {
             System.out.println("Error in loading Tileset:");
             ex.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * lädt alle in der map befindlichen hitboxen in eine arraylist
+     *
+     * @param objectLayerNode
+     * @return
+     */
+    public static ArrayList<Map.HitBox> loadHitBoxes(Element objectLayerNode) {
+        ArrayList<Map.HitBox> result = new ArrayList<>();
+        try {
+            List<Element> objects = objectLayerNode.getChildren("object");
+            for (Element obj : objects) {
+                try {
+                    float x = Float.valueOf(obj.getAttributeValue("x")) / 32f;
+                    float y = Float.valueOf(obj.getAttributeValue("y")) / 32f;
+                    float width = Float.valueOf(obj.getAttributeValue("width")) / 32f;
+                    float height = Float.valueOf(obj.getAttributeValue("height")) / 32f;
+                    Map.HitBox newHB = new Map.HitBox(x, y, width, height);
+                    result.add(newHB);
+                } catch (Exception ex) {
+                    System.out.println("Unreadable HitBox-Object: " + obj);
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("No HitBoxes / other Unknown Error");
+        }
+        return result;
     }
 }
