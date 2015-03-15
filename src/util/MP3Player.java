@@ -1,12 +1,10 @@
 package util;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.advanced.AdvancedPlayer;
+import paulscode.sound.SoundSystem;
+import paulscode.sound.SoundSystemConfig;
+import paulscode.sound.codecs.CodecJOrbis;
+import paulscode.sound.libraries.LibraryJavaSound;
 
 public class MP3Player {
 
@@ -17,59 +15,61 @@ public class MP3Player {
      * werden angehalten.
      */
     public static void stopAllAudio() {
-        for (MP3Player p : players) {
+        new Thread() {
+            public void run() {
+                getSoundSystem().cleanup();
+            }
+        }.start();
+    }
+
+    private static SoundSystem myOne = null;
+
+    private static SoundSystem getSoundSystem() {
+        if (myOne == null) {
             try {
-                p.stop();
-            } catch (Exception e) {
+                SoundSystemConfig.setSoundFilesPackage("/resources/sound/");
+                //SoundSystemConfig.addLibrary(LibraryLWJGLOpenAL.class);
+                SoundSystemConfig.addLibrary(LibraryJavaSound.class);
+                SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
+                //SoundSystemConfig.setCodec("ogg", CodecJOgg.class);
+                myOne = new SoundSystem();
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
-    }
-    private static final ArrayList<MP3Player> players = new ArrayList<>();
-
-    private AdvancedPlayer p;
-    private final String path;
-    private boolean looping = false;
-
-    public MP3Player(final String path) {
-        players.add(this);
-        this.path = path;
-        loadData();
+        return myOne;
     }
 
-    private void loadData() {
-        try {
-            URL u = MP3Player.class.getResource(path);
-            System.out.println("u = " + u);
-            p = new AdvancedPlayer(u.openStream());
-        } catch (IOException | JavaLayerException ex) {
-            Logger.getLogger(MP3Player.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public static void addSource(String name, String location, boolean looping) {
+        URL u = MP3Player.class.getResource("/resources/sound/" + location);
+        System.out.println("u = " + u);
+        getSoundSystem().backgroundMusic(name, u, location, looping);
+        getSoundSystem().loadSound(name); //not sure if actually neccessary :D
     }
 
-    public void play(final boolean isLooping) {
+    public static void play(String name) {
         if (AUDIO_ENABLED) {
-            looping = isLooping;
-            new Thread() {
-                public void run() {
-                    try {
-                        if (looping) {
-                            do {
-                                p.play();
-                                loadData();
-                            } while (looping);
-                        } else {
-                            p.play();
-                        }
-                    } catch (Exception ex) {
-                        System.out.println("Error while playing sound file: " + ex.getMessage());
-                    }
-                }
-            }.start();
+            getSoundSystem().play(name);
         }
     }
 
-    public void stop() {
-        looping = false;
-        p.close();
+    public static void setVolume(String name, int percent) {
+        getSoundSystem().setVolume(name, ((float) percent) / 100f);
+    }
+
+    public static void setMasterVolume(int percent) {
+        getSoundSystem().setMasterVolume(((float) percent) / 100f);
+    }
+
+    public static void fade(String fromName, String toName, int fadeOutMS, int fadeInMS) {
+        getSoundSystem().fadeOutIn(fromName, toName, fadeOutMS, fadeInMS);
+    }
+
+    public static void stop(String name) {
+        getSoundSystem().stop(name);
+    }
+
+    public static void fadeOut(String name, int ms) {
+        getSoundSystem().fadeOut(name, null, ms);
     }
 }
