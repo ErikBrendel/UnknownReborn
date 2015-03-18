@@ -131,6 +131,9 @@ public class MainMenueActivity extends GameActivity {
                 manager.clearActivityStack();
                 manager.showActivity("mapActivity", m);
                 break;
+            case 1:
+                manager.showActivity("textBoxActivity", "Es gibt leider noch keine Optionen. Tut mir sehr leid.");
+                break;
             case maxSelectedButton:
                 manager.showActivity("confirmExitWindow", "Do you really want to exit?");
                 break;

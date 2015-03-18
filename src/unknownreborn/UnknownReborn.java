@@ -4,6 +4,7 @@ import Activities.ActivityManager;
 import Activities.ConfirmExitWindow;
 import Activities.MainMenueActivity;
 import Activities.MapActivity;
+import Activities.TextBoxActivity;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.MP3Player;
@@ -41,6 +42,7 @@ public class UnknownReborn implements Runnable {
         manager.loadActivity(new MainMenueActivity(manager), "mainMenue");
         manager.loadActivity(new ConfirmExitWindow(manager), "confirmExitWindow");
         manager.loadActivity(new MapActivity(manager), "mapActivity");
+        manager.loadActivity(new TextBoxActivity(manager), "textBoxActivity");
         manager.showActivity("mainMenue", null);
         
         window.initialisation();
