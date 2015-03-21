@@ -141,7 +141,7 @@ public class AnimatedBufferedImage {
     private static boolean ticking = false;
     private static long tick = 0l;
 
-    private static long getTick() {
+    public static long getTick() {
         if (ticking) {
             return tick;
         } else {

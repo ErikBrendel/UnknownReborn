@@ -13,7 +13,7 @@ import util.MP3Player;
  *
  * @author Erik Brendel
  */
-public class UnknownReborn implements Runnable { 
+public class UnknownReborn implements Runnable {
 
     ActivityManager manager = null;
     Window window = null;
@@ -30,7 +30,7 @@ public class UnknownReborn implements Runnable {
     public static void main(String[] args) {
         UnknownReborn game = new UnknownReborn("UnknownReborn v.0.0.1");
         game.gameInitialisation();
-        
+
         isRunning = true;
         new Thread(game).start();
     }
@@ -44,37 +44,38 @@ public class UnknownReborn implements Runnable {
         manager.loadActivity(new MapActivity(manager), "mapActivity");
         manager.loadActivity(new TextBoxActivity(manager), "textBoxActivity");
         manager.showActivity("mainMenue", null);
-        
+
         window.initialisation();
         last = System.nanoTime();
     }
-    
+
     @Override
     public void run() {
+        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
         window.makeVisible();
-        
+
         while (isRunning) {
             computeDelta();
-            
+
             manager.update(delta);
             window.updateFPS(fps);
             window.repaint();
-           try {
+            try {
                 Thread.sleep(10);
-            } catch (InterruptedException ex) {
+            } catch (/*Interrupted*/Exception ex) {
                 Logger.getLogger(UnknownReborn.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         stopGame();
     }
-    
+
     private void computeDelta() {
         delta = System.nanoTime() - last;
         last = System.nanoTime();
         fps = ((long) 1e9) / delta;
     }
-    
+
     private void stopGame() {
         MP3Player.stopAllAudio();
         window.dispose();

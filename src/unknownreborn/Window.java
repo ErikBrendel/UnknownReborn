@@ -8,6 +8,7 @@ package unknownreborn;
 import Activities.ActivityManager;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -65,7 +66,8 @@ public class Window extends JFrame {
         public void paint(Graphics g) {
             manager.render((Graphics2D) g, getWidth(), getHeight());
             g.setColor(Color.RED);
-            g.drawString("FPS: " + Long.toString(fps), 20, 10);
+            g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 15));
+            g.drawString("FPS: " + Long.toString(fps), 20, 12);
         }
 
         HashSet<Integer> pressedKeys = new HashSet<>();

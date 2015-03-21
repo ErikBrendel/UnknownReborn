@@ -17,31 +17,33 @@ public class StringMetrics {
         return StandardCharsets.US_ASCII.newEncoder().canEncode(v);
     }
 
-    public static ArrayList<String> splitIntoLines(String complete, int maxPixelSize, Graphics2D g) {
+    public static ArrayList<String> splitIntoLines(String text, int maxPixelSize, Graphics2D g) {
         ArrayList<String> list = new ArrayList<>();
 
         do {
-            String now = complete;
-            while (getBounds(g, now).width > maxPixelSize) {
-                now = removeOneWord(now);
+            String lineNow = text;
+            while (getBounds(g, lineNow).width >= maxPixelSize) {
+                lineNow = removeLastWord(lineNow);
             }
-            list.add(now);
-            if (complete.length() == now.length()) {
-                break; //kein weiterer text
+            list.add(lineNow);
+            //System.out.println("added as line: " + lineNow);
+            if (text.length() == lineNow.length()) { //reached end of text
+                text = "";
             } else {
-                complete = complete.substring(now.length(), complete.length() - 1);
+                text = text.substring(lineNow.length() + 1); //+1 for the next space symbol.
             }
-        } while (true);
+        } while (text.length() > 0);
 
         return list;
     }
 
-    public static String removeOneWord(String input) {
-        String[] in = input.split(" ");
-        String erg = "";
-        for (int i = 0; i < in.length - 1; i++) {
-            erg += in[i];
+    public static String removeLastWord(String input) {
+        String[] words = input.split(" ");
+        String output = "";
+        for (int i = 0; i < words.length - 1; i++) {
+            output = output + " " + words[i];
         }
-        return erg.substring(0, erg.length() - 1);
+        output = output.substring(1);
+        return output;
     }
 }
