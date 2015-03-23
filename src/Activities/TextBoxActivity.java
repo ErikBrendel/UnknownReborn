@@ -23,7 +23,7 @@ public class TextBoxActivity extends GameActivity {
 
     public static final int FONT_SIZE = 100;
     public static final Font TEXT_FONT = new Font(Font.SERIF, Font.PLAIN, FONT_SIZE);
-    public static final int animationPauseBetweenCharacters = 50; //ms
+    public static final int animationPauseBetweenCharacters = 20; //ms
 
     private String msg = "";
     private ArrayList<String> msgList = null;
