@@ -42,7 +42,7 @@ public class TextBoxActivity extends GameActivity {
         g.setFont(TEXT_FONT);
         g.setColor(Color.BLACK);
         if (msgList == null) {
-            msgList = StringMetrics.splitIntoLines(msg, width - 50, g);
+            msgList = StringMetrics.splitIntoLines(msg, width - 100, g);
         }
         if (textBoxBGImage.getWidth() != width) {
             textBoxBGImage = ImageLoader.getScaledImage(textBoxBGImage, width, height / 2, ImageLoader.MODE_FINE);
