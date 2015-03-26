@@ -23,7 +23,7 @@ public class TextBoxActivity extends GameActivity {
 
     public static final int FONT_SIZE = 100;
     public static final Font TEXT_FONT = new Font(Font.SERIF, Font.PLAIN, FONT_SIZE);
-    public static final int animationPauseBetweenCharacters = 50; //ms
+    public static final int animationPauseBetweenCharacters = 20; //ms
 
     private String msg = "";
     private ArrayList<String> msgList = null;
@@ -42,7 +42,7 @@ public class TextBoxActivity extends GameActivity {
         g.setFont(TEXT_FONT);
         g.setColor(Color.BLACK);
         if (msgList == null) {
-            msgList = StringMetrics.splitIntoLines(msg, width - 50, g);
+            msgList = StringMetrics.splitIntoLines(msg, width - 100, g);
         }
         if (textBoxBGImage.getWidth() != width) {
             textBoxBGImage = ImageLoader.getScaledImage(textBoxBGImage, width, height / 2, ImageLoader.MODE_FINE);

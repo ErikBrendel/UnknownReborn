@@ -5,6 +5,7 @@
  */
 package Activities;
 
+import Entity.CollisionComponent;
 import Entity.Entity;
 import Entity.MoveComponent;
 import java.awt.Color;
@@ -14,6 +15,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import unknownreborn.Map;
 import unknownreborn.MapLoader;
@@ -96,7 +98,7 @@ public class MainMenueActivity extends GameActivity {
         switch (buttonID) {
             case 0:
                 final Map m = MapLoader.loadMapFromResources("test2");
-                Entity follower = new Entity() {
+                final Entity follower = new Entity() {
                     @Override
                     public BufferedImage getImage() {
                         BufferedImage img = new BufferedImage(32, 64, BufferedImage.TYPE_INT_ARGB);
@@ -119,12 +121,26 @@ public class MainMenueActivity extends GameActivity {
                         DoublePoint old = getLocation();
                         DoublePoint playerLoc = m.getPlayerEntity().getLocation();
                         DoublePoint newLoc = new DoublePoint(old.x * 0.999 + playerLoc.x * 0.001, old.y * 0.999 + playerLoc.y * 0.001);
-                        if (m.isWalkable(newLoc, null)) {
+                        ArrayList<Entity> except = new ArrayList<Entity>();
+                        except.add(follower);
+                        if (m.isWalkable(newLoc, except)) {
                             setLocation(newLoc);
                         }
                     }
                 });
-                follower.setLocation(new DoublePoint(19,27));
+                follower.setLocation(new DoublePoint(19, 27));
+                follower.setCollisionComponent(new CollisionComponent() {
+
+                    @Override
+                    public DoublePoint getCollisionBoxStart() {
+                        return new DoublePoint(-0.3, -0.2);
+                    }
+
+                    @Override
+                    public DoublePoint getCollisionBoxEnd() {
+                        return new DoublePoint(0.3, 0.2);
+                    }
+                });
 
                 m.addEntity(follower);
 
