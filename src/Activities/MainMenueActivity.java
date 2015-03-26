@@ -151,11 +151,8 @@ public class MainMenueActivity extends GameActivity {
 
     @Override
     public void onEnter(Object p) {
-        //background = new MP3Player("/resources/sound/menueBG.mp3", 0.5f, 1f);
-        //background.play(true);
         MP3Player.addSource("menueBG", "menueBG.ogg", true);
-        MP3Player.setVolume("menueBG", 100);
-        MP3Player.play("menueBG");
+        MP3Player.play("menueBG", true);
 
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         bgImage = ImageLoader.getScaledImage(ImageLoader.get().image("/resources/images/menue/mainBG.jpg"), screen.width, screen.height, ImageLoader.MODE_FINE);

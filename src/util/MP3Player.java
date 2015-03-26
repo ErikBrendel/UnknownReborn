@@ -1,6 +1,7 @@
 package util;
 
 import java.net.URL;
+import java.util.HashMap;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.codecs.CodecJOrbis;
@@ -32,6 +33,12 @@ public class MP3Player {
                 SoundSystemConfig.addLibrary(LibraryJavaSound.class);
                 SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
                 //SoundSystemConfig.setCodec("ogg", CodecJOgg.class);
+
+                { //nur zum probieren, kann viele Fehler verursachen
+                    SoundSystemConfig.setNumberStreamingChannels(6);
+                    SoundSystemConfig.setNumberNormalChannels(26);
+                }
+
                 myOne = new SoundSystem();
                 myOne.setListenerPosition(0, 0, 100);
             } catch (Exception ex) {
@@ -41,26 +48,52 @@ public class MP3Player {
         return myOne;
     }
 
-    public static void addSource(String name, String location, boolean looping) {
+    public static void addSource(String name, String location, boolean streaming) {
         URL u = MP3Player.class.getResource("/resources/sound/" + location);
         System.out.println("u = " + u);
         //getSoundSystem().backgroundMusic(name, u, location, looping);
-        getSoundSystem().newSource(true, name, u, location, looping, 0, 0, 0, SoundSystemConfig.ATTENUATION_ROLLOFF, SoundSystemConfig.getDefaultRolloff());
-        //getSoundSystem().loadSound(name); //not sure if actually neccessary :D
+        if (streaming) {
+            getSoundSystem().newStreamingSource(true, name, u, location, false, 0, 0, 0, SoundSystemConfig.ATTENUATION_ROLLOFF, SoundSystemConfig.getDefaultRolloff());
+        } else {
+            getSoundSystem().newSource(true, name, u, location, false, 0, 0, 0, SoundSystemConfig.ATTENUATION_ROLLOFF, SoundSystemConfig.getDefaultRolloff());
+            getSoundSystem().loadSound(name); //not sure if actually neccessary :D
+        }
     }
 
-    public static void play(String name) {
+    private static final HashMap<String, Boolean> playing = new HashMap<>();
+
+    public static void play(final String name, final boolean looping) {
         if (AUDIO_ENABLED) {
-            getSoundSystem().play(name);
+            System.out.println("Playing \"" + name + "\"...");
+            if (looping) {
+                playing.put(name, true);
+                new Thread() {
+                    public void run() {
+                        while (playing.get(name)) {
+                            getSoundSystem().play(name);
+                            while(getSoundSystem().playing(name)) {
+                                try {
+                                    Thread.sleep(1);
+                                } catch (Exception ex) {
+                                    
+                                }
+                            }
+                        }
+                    }
+                }.start();
+            } else {
+                getSoundSystem().play(name);
+            }
         }
     }
 
     public static void setVolume(String name, int percent) {
         getSoundSystem().setVolume(name, ((float) percent) / 100f);
     }
-    
+
     /**
      * 0 % = mittig, -100 prozent = links, 100% = rechts
+     *
      * @param name
      * @param percent
      */
@@ -77,6 +110,7 @@ public class MP3Player {
     }
 
     public static void stop(String name) {
+        playing.put(name, false);
         getSoundSystem().stop(name);
     }
 

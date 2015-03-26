@@ -77,8 +77,10 @@ public class UnknownReborn implements Runnable {
     }
 
     private void stopGame() {
+        manager.clearActivityStack();
         MP3Player.stopAllAudio();
         window.dispose();
-        manager.removeActivity("mainMenue");
+        manager = null;
+        window = null;
     }
 }
