@@ -2,6 +2,7 @@ package unknownreborn;
 
 import Activities.ActivityManager;
 import Activities.ConfirmExitWindow;
+import Activities.ImageOverlayActivity;
 import Activities.MainMenueActivity;
 import Activities.MapActivity;
 import Activities.TextBoxActivity;
@@ -43,6 +44,7 @@ public class UnknownReborn implements Runnable {
         manager.loadActivity(new ConfirmExitWindow(manager), "confirmExitWindow");
         manager.loadActivity(new MapActivity(manager), "mapActivity");
         manager.loadActivity(new TextBoxActivity(manager), "textBoxActivity");
+        manager.loadActivity(new ImageOverlayActivity(manager), "imageOverlayActivity");
         manager.showActivity("mainMenue", null);
 
         window.initialisation();

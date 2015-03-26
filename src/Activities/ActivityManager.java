@@ -57,10 +57,21 @@ public class ActivityManager {
     /**
      * eine aktive activity aus dem activeStack entfernen
      *
-     * @param name
+     * @param name der name
      */
     public void removeActivity(String name) {
         GameActivity remove = activities.get(name);
+        if (remove != null) {
+            remove.onExit();
+            activeStack.remove(remove);
+        }
+    }
+    
+    /**
+     * eine activity vom aktiven stack entfernen
+     * @param remove
+     */
+    public void removeActivity(GameActivity remove) {
         if (remove != null) {
             remove.onExit();
             activeStack.remove(remove);
@@ -123,5 +134,22 @@ public class ActivityManager {
             i--;
             a = activeStack.get(i);
         } while (!a.onKeyReleased(e));
+    }
+    
+    /**
+     * damit man methoden einer bestimmten activity anwenden kann
+     * @return diese Activity
+     */
+    public GameActivity getUpperActivity() {
+        return activeStack.get(activeStack.size() - 1);
+    }
+    
+    /**
+     * damit man methoden einer bestimmten activity anwenden kann
+     * @param name der Name dieser activity
+     * @return diese Activity, oder null wenn nicht vorhanden
+     */
+    public GameActivity getActivity(String name) {
+        return activities.get(name);
     }
 }
